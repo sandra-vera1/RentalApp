@@ -60,9 +60,13 @@
     <Folder Include="dbo\Tables" />
     <Folder Include="dbo\StoredProcedures" />
     <Folder Include="dbo\Functions" />
+    <Folder Include="Script" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
     <Build Include="dbo\Tables\Account.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Script\Pre-Deployment.sql" />
   </ItemGroup>
 </Project>
