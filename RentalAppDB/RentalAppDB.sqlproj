@@ -75,7 +75,4 @@
     <None Include="Script\Pre-Deployment.sql" />
     <None Include="Script\CreateDB_Tables.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="RentalAppDB.refactorlog" />
-  </ItemGroup>
 </Project>
