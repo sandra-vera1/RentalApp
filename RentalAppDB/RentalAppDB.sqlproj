@@ -63,10 +63,19 @@
     <Folder Include="Script" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\User.sql" />
-    <Build Include="dbo\Tables\Account.sql" />
+    <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\AccountType.sql" />
+    <Build Include="dbo\Tables\Properties.sql" />
+    <Build Include="dbo\Tables\Term.sql" />
+    <Build Include="dbo\Tables\Address.sql" />
+    <Build Include="dbo\Tables\Provinces.sql" />
+    <Build Include="dbo\Tables\ParkingStalls.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Script\Pre-Deployment.sql" />
+    <None Include="Script\CreateDB_Tables.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="RentalAppDB.refactorlog" />
   </ItemGroup>
 </Project>
