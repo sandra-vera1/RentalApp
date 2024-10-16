@@ -11,5 +11,5 @@
     [Availability] BIT NOT NULL, 
     CONSTRAINT [FK_Properties_ToUsers] FOREIGN KEY (OwnerID) REFERENCES Users(UserID), 
     CONSTRAINT [FK_Properties_ToTerm] FOREIGN KEY (TermID) REFERENCES Term(TermID), 
-    CONSTRAINT [FK_Properties_ToAddress] FOREIGN KEY (AddressID) REFERENCES Address(AddressID)
+    CONSTRAINT [FK_Properties_ToAddress] FOREIGN KEY (AddressID) REFERENCES [Address](AddressID)
 )
