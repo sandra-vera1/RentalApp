@@ -1,4 +1,4 @@
-﻿IF DB_ID('RentalAppDB') IS NOT NULL
+IF DB_ID('RentalAppDB') IS NOT NULL
 	DROP DATABASE RentalAppDB
 GO
 
@@ -10,13 +10,13 @@ GO
 
 
 CREATE TABLE [dbo].[AccountType] (
-    [AccountTypeID] INT          NOT NULL,
+    [AccountTypeID] INT IDENTITY(1,1) NOT NULL,
     [AccountName]   VARCHAR (30) NOT NULL,
     PRIMARY KEY CLUSTERED ([AccountTypeID] ASC)
 );
 
 CREATE TABLE [dbo].[Address] (
-    [AddressID]    INT           NOT NULL,
+    [AddressID]    INT IDENTITY(1,1) NOT NULL,
     [Neighborhood] VARCHAR (100) NOT NULL,
     [StreetNumber] INT           NOT NULL,
     [StreetName]   VARCHAR (150) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE [dbo].[Address] (
 );
 
 CREATE TABLE [dbo].[ParkingStalls] (
-    [StallID]      INT   NOT NULL,
+    [StallID]      INT IDENTITY(1,1) NOT NULL,
     [Availability] BIT   NOT NULL,
     [Price]        MONEY NULL,
     [PropertyID]   INT   NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE [dbo].[ParkingStalls] (
 );
 
 CREATE TABLE [dbo].[Properties] (
-    [PropertyID]   INT           NOT NULL,
+    [PropertyID]   INT IDENTITY(1,1) NOT NULL,
     [SqFt]         VARCHAR (30)  NOT NULL,
     [Facilities]   VARCHAR (100) NOT NULL,
     [Type]         VARCHAR (30)  NOT NULL,
@@ -51,19 +51,19 @@ CREATE TABLE [dbo].[Properties] (
 );
 
 CREATE TABLE [dbo].[Provinces] (
-    [ProvinceID]   INT          NOT NULL,
+    [ProvinceID]   INT IDENTITY(1,1) NOT NULL,
     [ProvinceName] VARCHAR (50) NOT NULL,
     PRIMARY KEY CLUSTERED ([ProvinceID] ASC)
 );
 
 CREATE TABLE [dbo].[Term] (
-    [TermID]   INT          NOT NULL,
+    [TermID]   INT IDENTITY(1,1) NOT NULL,
     [TermName] VARCHAR (50) NOT NULL,
     PRIMARY KEY CLUSTERED ([TermID] ASC)
 );
 
 CREATE TABLE [dbo].[Users] (
-    [UserID]        INT          NOT NULL,
+    [UserID]        INT IDENTITY(1,1) NOT NULL,
     [UserName]      VARCHAR (30) NOT NULL,
     [Password]      VARCHAR (30) NOT NULL,
     [PhoneNumber]   VARCHAR (30) NOT NULL,

@@ -1,4 +1,8 @@
+using RentalApp;
+
 var builder = WebApplication.CreateBuilder(args);
+// Bind the connection string from configuration
+builder.Services.Configure<ConnectionStringOptions>(builder.Configuration.GetSection("ConnectionStrings"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
