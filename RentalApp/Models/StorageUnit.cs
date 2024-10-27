@@ -1,6 +1,8 @@
 ﻿namespace RentalApp.Models
 {
-    public class StorageUnit
+    public class StorageUnit : Property
     {
+
+
     }
 }
