@@ -34,23 +34,23 @@ namespace RentalApp.Controllers
         // POST: UserController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult CreateUser(IFormCollection collection)
         {
             try
             {
                 int userId = Convert.ToInt32(collection.ToList()[0].Value);
-                string userName = collection.ToList()[1].Value;
-                string password = collection.ToList()[2].Value;
-                string userPhoneNumber = collection.ToList()[3].Value;
-                string userEmail = collection.ToList()[4].Value;
-                int userAccountType = Convert.ToInt32(collection.ToList()[5].Value);
+                string userName = collection.ToList()[2].Value;
+                string password = collection.ToList()[3].Value;
+                string userPhoneNumber = collection.ToList()[4].Value;
+                string userEmail = collection.ToList()[5].Value;
+                int userAccountType = Convert.ToInt32(collection.ToList()[6].Value);
                 User user = new User(userId, userName, password, userPhoneNumber, userEmail, userAccountType);
                 appManager.CreateUser(user);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View("Create");
             }
         }
 
