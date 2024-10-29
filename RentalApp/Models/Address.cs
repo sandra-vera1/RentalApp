@@ -26,9 +26,9 @@
 
         }
         
-        public override void ToString()
+        public override string ToString()
         {
-            return $"{StreetNumber} {StreetName}, {City}, {Province} {PostalCode}"
+            return $"{StreetNumber} {StreetName}, {City}, {Province}, {PostalCode}"; //fix sintax error
         }
 
     }

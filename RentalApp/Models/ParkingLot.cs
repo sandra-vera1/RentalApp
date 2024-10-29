@@ -13,22 +13,23 @@
         // Simply input the number of each type of stalls the parking lot has. 
         public void GenerateNumberOfStalls(int num, bool availa, string term, string type, double price)
         {
-          
-            foreach(int i in num)
+
+            for (int i = 0; i < num; i++) //hange 
             {
                 ParkingStalls.Add(new ParkingStall(stallId, availa, term, type, price));
                 stallId++;
             }
         }
-    
 
-        public double CalculateStallRentalCost(int id, int duration)
-        {
-            ParkingStalls.Find(stall => stall.StallId = id)
-            {
-                return stall.Price * stall.Term * duration;
-            }
-        }
+        //i comment bc error
+        //public double CalculateStallRentalCost(int id, int duration)
+        //{
+
+        //    ParkingStalls.Find(stall => stall.StallId == id);
+        //    {
+        //        return stall.Price * stall.Term * duration;
+        //    }
+        //}
 
 
 
