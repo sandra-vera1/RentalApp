@@ -22,7 +22,8 @@ namespace RentalApp.Controllers
         // GET: AddressController
         public ActionResult Index()
         {
-            return View();
+            List <Address> Model = _address.ListAddress();
+            return View(Model);
         }
 
         // GET: AddressController/Details/5
@@ -34,7 +35,7 @@ namespace RentalApp.Controllers
         // GET: AddressController/Create
         public ActionResult Create()
         {
-            return View();
+            return View(_address);
         }
 
         // POST: AddressController/Create
@@ -66,7 +67,7 @@ namespace RentalApp.Controllers
         }
 
         // GET: AddressController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id)  //Here is for write Update code
         {
             return View();
         }

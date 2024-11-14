@@ -37,9 +37,17 @@
                 <input asp-for="City" class="form-control" />
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
-            <div class="form-group"> @* This field need to change for display province name *@
+            <div class="form-group">
                 <label asp-for="Province" class="control-label"></label>
-                <input asp-for="Province" class="form-control" />
+                <select asp-for="Province" class="form-control" id="selectProvince">
+                    @foreach (var item in Model.Provinces)
+                    {
+                        <option value="@item.Province">
+                                @Html.DisplayFor(modelItem => item.ProvinceName)
+                        </option>
+                            
+                    }
+                </select>
                 <span asp-validation-for="Province" class="text-danger"></span>
             </div>
             <div class="form-group">

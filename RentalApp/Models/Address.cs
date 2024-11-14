@@ -1,6 +1,5 @@
 ﻿using System.Data.SqlClient;
 using System.Data;
-using System.Diagnostics.Metrics;
 
 namespace RentalApp.Models
 {
@@ -16,6 +15,9 @@ namespace RentalApp.Models
         public string PostalCode { get; private set; }
         public int SuiteNumber { get; private set; }
 
+        public string ProvinceName { get; private set; }
+        public List<Address> Provinces { get; private set; }
+
 
         public Address(string neighborhood, int streetNum, string streetName, string city, int province, string country, string postalCode, int suiteNum)
         {
@@ -28,19 +30,25 @@ namespace RentalApp.Models
             Country = country;
             PostalCode = postalCode;
             SuiteNumber = suiteNum;
-
-
         }
-        
+
+        public Address(int province, string provinceName) { 
+
+            Province = province;
+            ProvinceName = provinceName;
+        }
+
+
         public override string ToString()
         {
             return $"{StreetNumber} {StreetName}, {City}, {Province}, {PostalCode}"; //fix sintax error
         }
 
         //Connect to DB //step 1
-        public Address(string connectionString) 
+        public Address(string connectionString)
         {
             _connectionString = connectionString;
+            Provinces = ListProvinces();
         }
 
         private readonly string _connectionString;
@@ -54,7 +62,7 @@ namespace RentalApp.Models
             {
                 using (SqlCommand cmd = new SqlCommand("SaveAddress", con))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure; 
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add("@Neighborhood", SqlDbType.VarChar).Value = address.Neighborhood;
                     cmd.Parameters.Add("@StreetNumber", SqlDbType.Int).Value = address.StreetNumber;
                     cmd.Parameters.Add("@StreetName", SqlDbType.VarChar).Value = address.StreetName;
@@ -70,14 +78,57 @@ namespace RentalApp.Models
             return transaction == 1;
         }
 
-         public void IndexAddress()
+        public List<Address> ListAddress()
         {
-
-           
-
-            
+            List<Address> addresses = new List<Address>();
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("DisplayAddresses", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        string Neigborhood = dr.GetString("Neighborhood");
+                        int StreetNumber = dr.GetInt32("StreetNumber");
+                        string StreetName = dr.GetString("StreetName");
+                        string City = dr.GetString("City");
+                        int ProvinceID = dr.GetInt32("ProvinceID");
+                        string Country = dr.GetString("Country");
+                        int SuiteNumber = dr.GetInt32("SuiteNumber");
+                        string PostalCode = dr.GetString("PostalCode");
+                        Address address = new Address(Neigborhood, StreetNumber, StreetName, City,
+                            ProvinceID, Country, PostalCode, SuiteNumber);
+                        address.AddressId = dr.GetInt32("AddressID");
+                        address.ProvinceName = dr.GetString("ProvinceName");
+                        addresses.Add(address);
+                    }
+                }
+            }
+            return addresses;
         }
 
+        public List<Address> ListProvinces()
+        {
+            List<Address> provinces = new List<Address>();
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("DisplayProvinces", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        int ProvinceID = dr.GetInt32("ProvinceID");
+                        string ProvinceName = dr.GetString("ProvinceName");
+                        provinces.Add(new Address(ProvinceID, ProvinceName));
+                    }
+                }
+            }
+            return provinces;
+        }
 
     }
 }
