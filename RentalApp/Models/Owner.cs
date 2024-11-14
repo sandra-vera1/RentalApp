@@ -13,16 +13,16 @@
         }
 
 
-        public void AddProperty(int propertyId, int addressId, string neighborhood, int streetNum, string streetName,
-            string city, string province, string postalCode,
-            int suiteNum, double sqFt, string term,
-            string type, bool availa, double price)
-        {
-            Properties.Add(new Property(propertyId, addressId, neighborhood, streetNum, streetName,
-                city, province, postalCode,
-                suiteNum, sqFt, term,
-                type, availa, price));
-        }
+        //public void AddProperty(int propertyId, int addressId, string neighborhood, int streetNum, string streetName,
+        //    string city, int province, string country, string postalCode,
+        //    int suiteNum, double sqFt, string term,
+        //    string type, bool availa, double price)
+        //{
+        //    Properties.Add(new Property(propertyId, addressId, neighborhood, streetNum, streetName,
+        //        city, province, country, postalCode,
+        //        suiteNum, sqFt, term,
+        //        type, availa, price));
+        //}
 
 
         //I commented this code:

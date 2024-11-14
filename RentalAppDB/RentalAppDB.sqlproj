@@ -71,6 +71,7 @@
     <Build Include="dbo\Tables\Provinces.sql" />
     <Build Include="dbo\Tables\ParkingStalls.sql" />
     <Build Include="dbo\StoredProcedures\SaveUser.sql" />
+    <Build Include="dbo\StoredProcedures\SaveAddress.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Script\Pre-Deployment.sql" />

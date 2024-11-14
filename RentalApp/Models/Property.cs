@@ -12,14 +12,14 @@
         public double Price { get; private set; }
 
 
-        public Property(int propertyId, int addressId, string neighborhood, int streetNum, string streetName, 
-            string city, string province, string postalCode, 
+        public Property(int propertyId, string neighborhood, int streetNum, string streetName, 
+            string city, int province, string country ,string postalCode, 
             int suiteNum, double sqFt,string term, 
             string type, bool availa, double price ) 
 
         { 
             PropertyId = propertyId;
-            PropertyAddress = new Address(addressId, neighborhood, streetNum, streetName, city, province, postalCode, suiteNum);
+            PropertyAddress = new Address( neighborhood, streetNum, streetName, city, province, country,postalCode, suiteNum);
             SquareFootage = sqFt;
             Term = term;
             Type = type;
