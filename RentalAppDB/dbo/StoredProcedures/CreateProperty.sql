@@ -12,9 +12,3 @@ AS BEGIN
 	INSERT INTO [dbo].[Properties]([SqFt], [Facilities], [Type], [Price], [OwnerID], [AddressID], [TermID], [Availability])
 	VALUES (@SqFt, @Facilities, @Type, @Price, @OwnerID, @AddressID, @TermID, @Availability);
 END
-
-
-
-
-
-

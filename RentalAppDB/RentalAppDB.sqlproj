@@ -74,7 +74,8 @@
     <Build Include="dbo\StoredProcedures\SaveAddress.sql" />
     <Build Include="dbo\StoredProcedures\DisplayAddresses.sql" />
     <Build Include="dbo\StoredProcedures\DisplayProvinces.sql" />
-    <Build Include="dbo\StoredProcedures\CreateProperty_1.sql" />
+    <Build Include="Script\PopulateDB.sql" />
+    <Build Include="dbo\StoredProcedures\CreateProperty.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Script\Pre-Deployment.sql" />
