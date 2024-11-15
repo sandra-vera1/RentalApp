@@ -45,15 +45,14 @@ namespace RentalApp.Controllers
         {
             try
             {
-                int addressId = Convert.ToInt32(collection.ToList()[0].Value);
-                double sqFt = Convert.ToDouble(collection.ToList()[2].Value);
-                int termId = Convert.ToInt32(collection.ToList()[3].Value);
-                string type = collection.ToList()[4].Value;
-                string facilities = collection.ToList()[5].Value;
-                string checkAvail = collection.ToList()[6].Value;
-                bool availability = true;
+                int addressId = Convert.ToInt32(collection["AddressId"][0]);
+                double sqFt = Convert.ToDouble(collection["SquareFootage"][0]);
+                int termId = Convert.ToInt32(collection["TermId"][0]);
+                string type = collection["Type"][0];
+                string facilities = collection["Facilities"][0];
+                bool availability = Convert.ToBoolean(collection["Availability"][0]);
 
-                int price = Convert.ToInt32(collection.ToList()[7].Value);
+                int price = Convert.ToInt32(collection["Price"][0]);
                 // probably parse owner ID from log in?
                 // int ownerId = Convert.ToInt32(collection.ToList()[0].Value);
                 int ownerId = 1; // using a default for now

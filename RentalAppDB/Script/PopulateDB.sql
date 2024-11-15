@@ -1,13 +1,8 @@
-
-
-
-
 INSERT INTO Term VALUES 
 ('Year'),
 ('Month'),
 ('Week'),
-('Day')
-;
+('Day');
 
 INSERT INTO Provinces VALUES 
 ('AB'),
@@ -29,7 +24,6 @@ INSERT INTO AccountType VALUES
 ('Renter');
 
 
-GO
 
 INSERT INTO Address VALUES
 ('Riverbend', 102, 'Elm St', 'Edmonton', 'Canada', NULL, 'T5H1R1', 1),
