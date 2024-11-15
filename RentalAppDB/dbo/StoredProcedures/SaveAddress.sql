@@ -3,7 +3,7 @@
 	@StreetNumber int,
 	@StreetName varchar(150),
 	@City varchar(50),
-	@ProvinceID int = 1, --Alberta in Province table
+	@ProvinceID int = 1, 
 	@Country varchar(50),
 	@SuiteNumber int,
 	@PostalCode char(6)

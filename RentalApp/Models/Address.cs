@@ -5,7 +5,7 @@ namespace RentalApp.Models
 {
     public class Address
     {
-        public int AddressId { get; private set; } // pending put in Class diagram
+        public int AddressId { get;  set; } // pending put in Class diagram
         public string Neighborhood { get; private set; }
         public int StreetNumber { get; private set; }
         public string StreetName { get; private set; }
@@ -16,8 +16,7 @@ namespace RentalApp.Models
         public int SuiteNumber { get; private set; }
 
         public string ProvinceName { get; private set; }
-        public List<Address> Provinces { get; private set; }
-
+        public List<Address> Provinces { get; set; }
 
         public Address(string neighborhood, int streetNum, string streetName, string city, int province, string country, string postalCode, int suiteNum)
         {
@@ -38,17 +37,15 @@ namespace RentalApp.Models
             ProvinceName = provinceName;
         }
 
-
-        public override string ToString()
-        {
-            return $"{StreetNumber} {StreetName}, {City}, {Province}, {PostalCode}"; //fix sintax error
-        }
-
         //Connect to DB //step 1
         public Address(string connectionString)
         {
             _connectionString = connectionString;
             Provinces = ListProvinces();
+        }
+        public override string ToString()
+        {
+            return $"{StreetNumber} {StreetName}, {City}, {Province}, {PostalCode}"; //fix sintax error
         }
 
         private readonly string _connectionString;
@@ -78,6 +75,56 @@ namespace RentalApp.Models
             return transaction == 1;
         }
 
+        //[Update Address] //step 1 create stored procedure before. Connection is ready.
+        public bool UpdateAddress(Address address)
+        {
+            int transaction = 0;
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UpdateAddress", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@AddressID", SqlDbType.Int).Value = address.AddressId;
+                    cmd.Parameters.Add("@Neighborhood", SqlDbType.VarChar).Value = address.Neighborhood;
+                    cmd.Parameters.Add("@StreetNumber", SqlDbType.Int).Value = address.StreetNumber;
+                    cmd.Parameters.Add("@StreetName", SqlDbType.VarChar).Value = address.StreetName;
+                    cmd.Parameters.Add("@City", SqlDbType.VarChar).Value = address.City;
+                    cmd.Parameters.Add("@ProvinceID", SqlDbType.Int).Value = address.Province;
+                    cmd.Parameters.Add("@Country", SqlDbType.VarChar).Value = address.Country;
+                    cmd.Parameters.Add("@SuiteNumber", SqlDbType.Int).Value = address.SuiteNumber;
+                    cmd.Parameters.Add("@PostalCode", SqlDbType.Char).Value = address.PostalCode;
+                    con.Open();
+                    transaction = cmd.ExecuteNonQuery();
+                }
+            }
+            return transaction == 1;
+        }
+
+
+
+
+
+
+
+        // [DeleteAddress step 1] - create stored procedure before. Connection is ready.
+        public bool DeleteAddress(int AddressId)
+        {
+            int transaction = 0;
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("DeleteAddress", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@AddressID", SqlDbType.Int).Value = AddressId;
+                    con.Open();
+                    transaction = cmd.ExecuteNonQuery();
+                }
+            }
+            return transaction == 1;
+        }
+
+
+        // [Address List step 1] - create stored procedure before. Connection is ready.
         public List<Address> ListAddress()
         {
             List<Address> addresses = new List<Address>();
@@ -96,7 +143,7 @@ namespace RentalApp.Models
                         string City = dr.GetString("City");
                         int ProvinceID = dr.GetInt32("ProvinceID");
                         string Country = dr.GetString("Country");
-                        int SuiteNumber = dr.GetInt32("SuiteNumber");
+                        int SuiteNumber = dr.IsDBNull("SuiteNumber") ? 0 : dr.GetInt32("SuiteNumber");
                         string PostalCode = dr.GetString("PostalCode");
                         Address address = new Address(Neigborhood, StreetNumber, StreetName, City,
                             ProvinceID, Country, PostalCode, SuiteNumber);

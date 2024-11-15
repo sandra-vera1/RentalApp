@@ -25,19 +25,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
+                        @* I comment this because it does not work yet. I will do changes for match user with ERD Diagram
+                            <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Create">Create User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Address" asp-action="Create">Create Address</a> @* step 5 put this code for display the new view in the main Menu *@
-                        </li>
+                        </li> *@
+                       @*  I comment this because we can go to Create Address from Address List
+                           <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Address" asp-action="Create">Create Address</a> @* step 5 put this code for display the new view in the main Menu 
+                        </li> *@
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Property" asp-action="Create">Create Property</a> @* step 5 put this code for display the new view in the main Menu *@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Address" asp-action="Index">List Address</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Address" asp-action="Index">Address List</a>
                         </li>
                     </ul>
                 </div>

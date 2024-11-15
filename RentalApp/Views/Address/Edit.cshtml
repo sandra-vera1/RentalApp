@@ -1,22 +1,17 @@
 ﻿@model RentalApp.Models.Address
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit"; // [Update Address] - step 4 create this View (file inside of Views/Address folder and always use the name Edit because of the default route) *@
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>Address</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @* <div class="form-group"> it is not necessary because the ID field is type of Identity
-                <label asp-for="AddressId" class="control-label"></label>
-                <input asp-for="AddressId" class="form-control" />
-                <span asp-validation-for="AddressId" class="text-danger"></span>
-            </div> *@
             <div class="form-group">
                 <label asp-for="Neighborhood" class="control-label"></label>
                 <input asp-for="Neighborhood" class="form-control" />
@@ -43,9 +38,9 @@
                     @foreach (var item in Model.Provinces)
                     {
                         <option value="@item.Province">
-                                @Html.DisplayFor(modelItem => item.ProvinceName)
+                            @Html.DisplayFor(modelItem => item.ProvinceName)
                         </option>
-                            
+
                     }
                 </select>
                 <span asp-validation-for="Province" class="text-danger"></span>
@@ -67,7 +62,7 @@
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-secondary" /> @* This is the submit that go to Address controller exactly in Create method *@
+                <input type="submit" value="Save" class="btn btn-secondary" />
             </div>
         </form>
     </div>

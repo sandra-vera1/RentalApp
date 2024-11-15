@@ -76,9 +76,10 @@
     <Build Include="dbo\StoredProcedures\DisplayProvinces.sql" />
     <None Include="Script\PopulateDB.sql" />
     <Build Include="dbo\StoredProcedures\CreateProperty.sql" />
+    <Build Include="dbo\StoredProcedures\DeleteAddress.sql" />
+    <Build Include="dbo\StoredProcedures\UpdateAddress.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Script\Pre-Deployment.sql" />
     <None Include="Script\CreateDB_Tables.sql" />
   </ItemGroup>
 </Project>
