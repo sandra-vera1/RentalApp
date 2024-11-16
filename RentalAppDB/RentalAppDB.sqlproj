@@ -78,6 +78,8 @@
     <Build Include="dbo\StoredProcedures\CreateProperty.sql" />
     <Build Include="dbo\StoredProcedures\DeleteAddress.sql" />
     <Build Include="dbo\StoredProcedures\UpdateAddress.sql" />
+    <Build Include="dbo\StoredProcedures\DisplayProperties.sql" />
+    <Build Include="dbo\StoredProcedures\GetAddressByID.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Script\CreateDB_Tables.sql" />
