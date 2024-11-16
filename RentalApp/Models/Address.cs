@@ -15,7 +15,7 @@ namespace RentalApp.Models
         public string PostalCode { get; private set; }
         public int SuiteNumber { get; private set; }
 
-        public string ProvinceName { get; private set; }
+        public string ProvinceName { get; set; } // had to change this set to public to modify it when getting prop data
         public List<Address> Provinces { get; set; }
 
         public Address(string neighborhood, int streetNum, string streetName, string city, int province, string country, string postalCode, int suiteNum)
