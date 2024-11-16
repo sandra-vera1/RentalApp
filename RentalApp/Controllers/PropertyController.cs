@@ -23,7 +23,16 @@ namespace RentalApp.Controllers
         // GET: PropertyController
         public ActionResult Index()
         {
-            return View();
+            try
+            {
+                List<Property> Model = _property.ListProperty();
+                return View(Model);
+            }
+            catch
+            {
+                // Redirect to home page on error right now
+                return View("../Home/Index");
+            }
         }
 
         // GET: PropertyController/Details/5
@@ -31,6 +40,27 @@ namespace RentalApp.Controllers
         {
             return View();
         }
+
+        // ************************ TEST *****************************
+
+        // GET: PropertyController/Details/5
+        public ActionResult Search(IFormCollection collection)
+        {
+            try
+            {
+
+                List<Property> Model = _property.ListProperty();
+                return View(Model);
+            }
+            catch
+            {
+                return View("PropertyList");
+            }
+            
+        }
+
+
+        // *****************************************************
 
         // GET: PropertyController/Create
         public ActionResult Create()
