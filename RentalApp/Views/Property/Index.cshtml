@@ -6,11 +6,69 @@
 
 <h1>Index</h1>
 
+@*
 <p>
     <a asp-action="Create">Create New</a>
-</p>
+</p> 
+*@
+<div>
+    <form asp-action="Search">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label for="SearchAll">Search All</label>
+            <input for="SearchAll" />
+            
+        </div>
+        <br />
+        <div class="form-group">
+
+            <label for="Availability">Available Now</label>
+            <input for="Availability" type="radio" />
+
+        </div>
+        <br />
+        <div class="form-group">
+            <label>Price:</label>
+            <label for="PriceMin" class="control-label">Min</label>
+            <input for="PriceMin" />
+            <label for="PriceMax" class="control-label">Max</label>
+            <input for="PriceMax" />
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="Neighborhood">Neighborhood</label>
+            <input for="Neighborhood" />
+
+            <label for="Type">Type</label>
+            <select for="Type">
+                <option value="All">All</option>
+                <option value="Storage">Storage</option>
+                <option value="ParkingLot">Parking Lot</option>
+            </select>
+        </div>
+        <br />
+        <div class="form-group">
+            <label>Square Footage:</label>
+            <label for="SqFtMin" class="control-label">Min</label>
+            <input for="SqFtMin" />
+            <label for="SqFtMax" class="control-label">Max</label>
+            <input for="SqFtMax" />
+        </div>
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Search" class="btn btn-secondary" />
+        </div>       
+
+
+    </form>
+
+    
+</div>
+
+
 <table class="table">
-    <thead>
+	<thead>
+		<a href="d:\school\sodv2202 oop\sodv2202_groupproject_rentalapp\rentalapp\rentalapp\views\property\create.cshtml">d:\school\sodv2202 oop\sodv2202_groupproject_rentalapp\rentalapp\rentalapp\views\property\create.cshtml</a>
         <tr>
             
             <th>
