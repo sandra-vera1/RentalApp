@@ -48,19 +48,55 @@ namespace RentalApp.Controllers
         {
             try
             {
+                foreach(var item in collection)
+                {
+                    Console.WriteLine(item);
+                }
+
+
+                //string type = collection["Type"][0];
+                //double sqFtMin = Convert.ToDouble(collection["SqFtMin"][0]);
+                //double sqFtMax = Convert.ToDouble(collection["SqFtMax"][0]);
+                //double priceMin = Convert.ToDouble(collection["PriceMin"][0]);
+                //double priceMax = Convert.ToDouble(collection["PriceMax"][0]);
+
 
                 List<Property> Model = _property.ListProperty();
-                return View(Model);
+                // Model.Contains(prop => prop.Price > minPrice);
+
+                return View("./Index", Model);
             }
             catch
             {
-                return View("PropertyList");
+                return View("Index");
             }
             
         }
 
 
         // *****************************************************
+
+
+        // GET: My Properties
+
+        public ActionResult MyProperties()
+        {
+            try
+            {
+                List<Property> Model = _property.ListProperty();
+
+                // **********************************************************************************************
+                // FILTER MODEL WITH LOGGED IN USER ID?? 
+                // **********************************************************************************************
+
+                return View(Model);
+            }
+            catch
+            {
+                // Redirect to home page on error right now
+                return View();
+            }
+        }
 
         // GET: PropertyController/Create
         public ActionResult Create()
