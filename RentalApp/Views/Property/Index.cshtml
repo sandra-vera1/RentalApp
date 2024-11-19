@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<RentalApp.Models.Property>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
@@ -9,143 +9,149 @@
 @*
 <p>
     <a asp-action="Create">Create New</a>
-</p> 
+</p>
 *@
 <div>
-    <form asp-action="Search">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label for="SearchAll">Search All</label>
-            <input for="SearchAll" />
-            
-        </div>
-        <br />
-        <div class="form-group">
+	<form asp-action="Search"
+		  data-ajax-method="Post">
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<div class="form-group">
+			<label for="SearchAll">Search All</label>
+			<input id="SearchAll" name="SearchAll" />
 
-            <label for="Availability">Available Now</label>
-            <input for="Availability" type="radio" />
+		</div>
+		<br />
+		<div class="form-group">
 
-        </div>
-        <br />
-        <div class="form-group">
-            <label>Price:</label>
-            <label for="PriceMin" class="control-label">Min</label>
-            <input for="PriceMin" />
-            <label for="PriceMax" class="control-label">Max</label>
-            <input for="PriceMax" />
-        </div>
-        <br />
-        <div class="form-group">
-            <label for="Neighborhood">Neighborhood</label>
-            <input for="Neighborhood" />
+			<label for="Availability">Available Now</label>
+			<input id="Availability" name="Availability" type="radio" />
 
-            <label for="Type">Type</label>
-            <select for="Type">
-                <option value="All">All</option>
-                <option value="Storage">Storage</option>
-                <option value="ParkingLot">Parking Lot</option>
-            </select>
-        </div>
-        <br />
-        <div class="form-group">
-            <label>Square Footage:</label>
-            <label for="SqFtMin" class="control-label">Min</label>
-            <input for="SqFtMin" />
-            <label for="SqFtMax" class="control-label">Max</label>
-            <input for="SqFtMax" />
-        </div>
-        <br />
-        <div class="form-group">
-            <input type="submit" value="Search" class="btn btn-secondary" />
-        </div>       
+		</div>
+		<br />
+		<div class="form-group">
+			<label>Price:</label>
+			<label for="PriceMin" class="control-label" type="number">Min</label>
+			<input id="PriceMin" name="PriceMin" />
+			<label for="PriceMax" class="control-label">Max</label>
+			<input id="PriceMax" name="PriceMax" />
+		</div>
+		<br />
+		<div class="form-group">
+			<label for="Neighborhood">Neighborhood</label>
+			<input id="Neighborhood" name="Neighborhood" />
+
+			<label for="Type">Type</label>
+			<select id="Type" name="Type">
+				<option value="All">All</option>
+				<option value="Storage">Storage</option>
+				<option value="ParkingLot">Parking Lot</option>
+			</select>
+		</div>
+		<br />
+		<div class="form-group">
+			<label>Square Footage:</label>
+			<label for="SqFtMin" class="control-label">Min</label>
+			<input id="SqFtMin" name="SqFtMin" />
+			<label for="SqFtMax" class="control-label">Max</label>
+			<input id="SqFtMax" name="SqFtMax" />
+		</div>
+		<br />
+		<div class="form-group">
+			<input type="submit" value="Search" class="btn btn-secondary" />
+		</div>
 
 
-    </form>
+	</form>
 
-    
+
 </div>
 
 
 <table class="table">
 	<thead>
 		<a href="d:\school\sodv2202 oop\sodv2202_groupproject_rentalapp\rentalapp\rentalapp\views\property\create.cshtml">d:\school\sodv2202 oop\sodv2202_groupproject_rentalapp\rentalapp\rentalapp\views\property\create.cshtml</a>
-        <tr>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.Address.StreetNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address.StreetName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address.ProvinceName)
-            </th> 
-            <th>
-                @Html.DisplayNameFor(model => model.SquareFootage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Facilities)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TermId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Availability)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Address.StreetNumber)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Address.StreetName)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Address.City)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Address.ProvinceName)
-            </td>
+		<br />
+		@Html.ActionLink("Create Property", "Create") <--- Is this what your were looking for? Html.ActionLink("Link text", "Action" )
+		<br />
+		<a href="/Property/Create">Create Property</a> <--- Created manually, the href should have the "/ControllerName/Action" if you need to pass a parameter like the id, you add at the end like "/ControllerName/Action/15"
+		<tr>
+
+			<th>
+				@Html.DisplayNameFor(model => model.Address.StreetNumber)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Address.StreetName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Address.City)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Address.ProvinceName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.SquareFootage)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Facilities)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TermId)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Type)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Availability)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Price)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Address.StreetNumber)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Address.StreetName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Address.City)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Address.ProvinceName)
+				</td>
 
 
 
-            <td>
-                @Html.DisplayFor(modelItem => item.SquareFootage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Facilities)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TermId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Availability)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
+				<td>
+					@Html.DisplayFor(modelItem => item.SquareFootage)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Facilities)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.TermId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Type)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Availability)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+					@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+					@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

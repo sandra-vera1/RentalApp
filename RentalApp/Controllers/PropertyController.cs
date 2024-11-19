@@ -43,22 +43,22 @@ namespace RentalApp.Controllers
 
         // ************************ TEST *****************************
 
-        // GET: PropertyController/Details/5
+        // POST: PropertyController/Search
+        [HttpPost]
         public ActionResult Search(IFormCollection collection)
         {
             try
             {
-                foreach(var item in collection)
-                {
-                    Console.WriteLine(item);
-                }
 
-
-                //string type = collection["Type"][0];
-                //double sqFtMin = Convert.ToDouble(collection["SqFtMin"][0]);
-                //double sqFtMax = Convert.ToDouble(collection["SqFtMax"][0]);
-                //double priceMin = Convert.ToDouble(collection["PriceMin"][0]);
-                //double priceMax = Convert.ToDouble(collection["PriceMax"][0]);
+                string type = collection["Type"][0];
+				//double sqFtMin = Convert.ToDouble(collection["SqFtMin"][0]);
+                //Remember to check if the value is a double before the convert or use the: double.TryParse(type, out double value);
+				double sqFtMin;
+                double.TryParse(collection["SqFtMin"][0], out sqFtMin);
+				
+				double sqFtMax = Convert.ToDouble(collection["SqFtMax"][0]);
+                double priceMin = Convert.ToDouble(collection["PriceMin"][0]);
+                double priceMax = Convert.ToDouble(collection["PriceMax"][0]);
 
 
                 List<Property> Model = _property.ListProperty();
