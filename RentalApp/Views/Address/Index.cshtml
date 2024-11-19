@@ -4,17 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Address List</h1>
 
 <p>
     <a asp-action="Create">Create New</a> @* // [Address List step 3] - create this View (file inside of Views/Address folder) *@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AddressId)
-            </th>
+        <tr class="table-dark">
             <th>
                 @Html.DisplayNameFor(model => model.Neighborhood)
             </th>
@@ -45,9 +42,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressId)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Neighborhood)
             </td>

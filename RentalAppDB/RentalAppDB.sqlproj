@@ -80,6 +80,8 @@
     <Build Include="dbo\StoredProcedures\UpdateAddress.sql" />
     <Build Include="dbo\StoredProcedures\DisplayProperties.sql" />
     <Build Include="dbo\StoredProcedures\GetAddressByID.sql" />
+    <Build Include="dbo\StoredProcedures\DisplayUsers.sql" />
+    <Build Include="dbo\StoredProcedures\UpdateUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Script\CreateDB_Tables.sql" />

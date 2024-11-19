@@ -1,22 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using RentalApp.Models;
+using System.Net;
 
 namespace RentalApp.Controllers
 {
     public class UserController : Controller
     {
-        private readonly AppManager appManager;
+        private readonly User _user;
         public UserController(IOptions<ConnectionStringOptions> options)
         {
             // Retrieve the connection string from the options
             string _connectionString = options.Value.Connection;
-            appManager = new AppManager(_connectionString);
+			_user = new User(_connectionString);
         }
         // GET: UserController
         public ActionResult Index()
         {
-            return View();
+            List<User> Model = _user.ListUsers();
+            return View(Model);
         }
 
         // GET: UserController/Details/5
@@ -38,14 +40,13 @@ namespace RentalApp.Controllers
         {
             try
             {
-                int userId = Convert.ToInt32(collection.ToList()[0].Value);
-                string userName = collection.ToList()[2].Value;
-                string password = collection.ToList()[3].Value;
-                string userPhoneNumber = collection.ToList()[4].Value;
-                string userEmail = collection.ToList()[5].Value;
-                int userAccountType = Convert.ToInt32(collection.ToList()[6].Value);
-                User user = new User(userId, userName, password, userPhoneNumber, userEmail, userAccountType);
-                appManager.CreateUser(user);
+                string userName = collection["userName"][0];
+                string password = collection["password"][0];
+				string userPhoneNumber = collection["userPhoneNumber"][0];
+				string userEmail = collection["userEmail"][0];
+                int userAccountType = Convert.ToInt32(collection["userAccountType"][0]);
+				User user = new User(userName, password, userPhoneNumber, userEmail, userAccountType);
+				_user.CreateUser(user);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -57,7 +58,9 @@ namespace RentalApp.Controllers
         // GET: UserController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            List<User> users = _user.ListUsers();
+            User user = users.First(a => a.UserId == id);
+            return View(user);
         }
 
         // POST: UserController/Edit/5
@@ -67,6 +70,14 @@ namespace RentalApp.Controllers
         {
             try
             {
+                string userName = collection["userName"][0];
+                string password = collection["password"][0];
+                string userPhoneNumber = collection["userPhoneNumber"][0];
+                string userEmail = collection["userEmail"][0];
+                int userAccountType = Convert.ToInt32(collection["userAccountType"][0]);
+                User user = new User(userName, password, userPhoneNumber, userEmail, userAccountType);
+                user.UserId = id;
+                _user.EditUser(user);
                 return RedirectToAction(nameof(Index));
             }
             catch

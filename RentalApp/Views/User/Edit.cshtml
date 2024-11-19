@@ -1,18 +1,19 @@
 ﻿@model RentalApp.Models.User
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Create User</h1>
+<h1>Edit User</h1>
+
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateUser">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UserName" class="control-label">User Name</label>
+                <label asp-for="UserName" class="control-label"></label>
                 <input asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
@@ -37,11 +38,11 @@
                     <option value="1">Owner</option>
                     <option value="2">Renter</option>
                 </select>
-                <span asp-validation-for="UserAccountType" class="text-danger"></span>
+                <span asp-validation-for="UserAccountType" class="text-secondary"></span>
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-secondary" />
+                <input type="submit" value="Save" class="btn btn-secondary" />
             </div>
         </form>
     </div>
