@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RentalApp.Models.Property>
+﻿@model IEnumerable<RentalApp.ViewModels.PropertyOwnerListView>
 
 @{
 	ViewData["Title"] = "Index";
@@ -24,7 +24,7 @@
 		<div class="form-group">
 
 			<label for="Availability">Available Now</label>
-			<input id="Availability" name="Availability" type="radio" />
+			<input id="Availability" name="Availability" type="checkbox" />
 
 		</div>
 		<br />
@@ -44,7 +44,7 @@
 			<select id="Type" name="Type">
 				<option value="All">All</option>
 				<option value="Storage">Storage</option>
-				<option value="ParkingLot">Parking Lot</option>
+				<option value="Parking Lot">Parking Lot</option>
 			</select>
 		</div>
 		<br />
@@ -77,34 +77,34 @@
 		<tr>
 
 			<th>
-				@Html.DisplayNameFor(model => model.Address.StreetNumber)
+				@Html.DisplayNameFor(model => model.Property.Address.StreetNumber)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Address.StreetName)
+				@Html.DisplayNameFor(model => model.Property.Address.StreetName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Address.City)
+				@Html.DisplayNameFor(model => model.Property.Address.City)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Address.ProvinceName)
+				@Html.DisplayNameFor(model => model.Property.Address.ProvinceName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.SquareFootage)
+				@Html.DisplayNameFor(model => model.Property.SquareFootage)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Facilities)
+				@Html.DisplayNameFor(model => model.Property.Facilities)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.TermId)
+				@Html.DisplayNameFor(model => model.Property.TermId)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Type)
+				@Html.DisplayNameFor(model => model.Property.Type)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Availability)
+				@Html.DisplayNameFor(model => model.Property.Availability)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Price)
+				@Html.DisplayNameFor(model => model.Property.Price)
 			</th>
 			<th></th>
 		</tr>
@@ -114,37 +114,37 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.Address.StreetNumber)
+					@Html.DisplayFor(modelItem => item.Property.Address.StreetNumber)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Address.StreetName)
+					@Html.DisplayFor(modelItem => item.Property.Address.StreetName)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Address.City)
+					@Html.DisplayFor(modelItem => item.Property.Address.City)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Address.ProvinceName)
+					@Html.DisplayFor(modelItem => item.Property.Address.ProvinceName)
 				</td>
 
 
 
 				<td>
-					@Html.DisplayFor(modelItem => item.SquareFootage)
+					@Html.DisplayFor(modelItem => item.Property.SquareFootage)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Facilities)
+					@Html.DisplayFor(modelItem => item.Property.Facilities)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.TermId)
+					@Html.DisplayFor(modelItem => item.Property.TermId)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Type)
+					@Html.DisplayFor(modelItem => item.Property.Type)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Availability)
+					@Html.DisplayFor(modelItem => item.Property.Availability)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Price)
+					@Html.DisplayFor(modelItem => item.Property.Price)
 				</td>
 				<td>
 					@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
