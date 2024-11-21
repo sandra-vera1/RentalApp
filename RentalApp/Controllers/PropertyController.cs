@@ -4,18 +4,27 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentalApp.Models;
+using RentalApp.ViewModels;
+//using RentalApp.Services.PropertyServices;
+using RentalApp.Services.PropertyService;
+
+
 
 namespace RentalApp.Controllers
 {
     public class PropertyController : Controller
     {
 
-        private readonly Property _property;
 
-        public PropertyController(IOptions<ConnectionStringOptions> options)
+
+        private readonly string _connectionString;
+        private readonly IPropertyService _propertyService;
+
+		public PropertyController(IOptions<ConnectionStringOptions> options,
+			IPropertyService propertyService)
         {
-            string _connectionString = options.Value.Connection;
-            _property = new Property(_connectionString);
+            _connectionString = options.Value.Connection;
+			_propertyService = propertyService;
         }
 
 
@@ -25,7 +34,7 @@ namespace RentalApp.Controllers
         {
             try
             {
-                List<Property> Model = _property.ListProperty();
+                var Model = _propertyService.Get(_connectionString);
                 return View(Model);
             }
             catch
@@ -50,21 +59,61 @@ namespace RentalApp.Controllers
             try
             {
 
-                string type = collection["Type"][0];
-				//double sqFtMin = Convert.ToDouble(collection["SqFtMin"][0]);
+
+                //double sqFtMin = Convert.ToDouble(collection["SqFtMin"][0]);
                 //Remember to check if the value is a double before the convert or use the: double.TryParse(type, out double value);
-				double sqFtMin;
-                double.TryParse(collection["SqFtMin"][0], out sqFtMin);
-				
-				double sqFtMax = Convert.ToDouble(collection["SqFtMax"][0]);
-                double priceMin = Convert.ToDouble(collection["PriceMin"][0]);
-                double priceMax = Convert.ToDouble(collection["PriceMax"][0]);
+                double priceMin;
+                double priceMax;
+                double sqFtMin;
+                double sqFtMax;
+
+                string searchAll = collection["SearchAll"][0];
+                
+                double.TryParse(collection["PriceMin"][0], out priceMin);
+                priceMin = priceMin > 0 ? priceMin : double.MinValue;
+                double.TryParse(collection["PriceMax"][0], out priceMax);
+                priceMax = priceMax > 0 ? priceMax : double.MaxValue;
 
 
-                List<Property> Model = _property.ListProperty();
+                double.TryParse(collection["sqFtMin"][0], out sqFtMin);
+                sqFtMin = sqFtMin > 0 ? sqFtMin : double.MinValue;
+                double.TryParse(collection["SqFtMax"][0], out sqFtMax);
+                sqFtMax = sqFtMax > 0 ? sqFtMax : double.MaxValue;
+
+                string neighborhood = collection["Neighborhood"][0];
+                string type = collection["Type"][0];
+                string testAvail = collection["Availability"][0];
+                bool? availability = collection["Availability"][0] == "Availability" ? true : false;
+                //Convert.ToBoolean(collection["Availability"][0]);
+                //bool availability = collection["Availability"][0];
+
+
+
+
+
+                //double.TryParse(collection["PriceMin"][0], out priceMin);
+                //double.TryParse(collection["PriceMax"][0], out priceMax);
+
+                //double.TryParse(collection["sqFtMin"][0], out sqFtMin);
+                //double.TryParse(collection["SqFtMax"][0], out sqFtMax);
+
+                //double priceMin = Convert.ToDouble(collection["PriceMin"][0])
+                //double priceMax = Convert.ToDouble(collection["PriceMax"][0]);
+                //double sqFtMin = Convert.ToDouble(collection["sqFtMin"][0]);
+                //double sqFtMax = Convert.ToDouble(collection["SqFtMax"][0]);
+
+                // List < Property> Model = _property.ListProperty();
+                //var FilteredModel = Model.Where(prop => prop.Price > priceMin)
+                //    .Where(prop => prop.Price < priceMax)
+                //    .Where(prop => prop.SquareFootage > sqFtMin)
+                //    .Where(prop => prop.SquareFootage < sqFtMax)
+                //    .Where(prop => prop.Type.ToLower() == type.ToLower() || type == "All")
+                //    .Where(prop => prop.Address.Neighborhood.Contains(neighborhood));
                 // Model.Contains(prop => prop.Price > minPrice);
 
-                return View("./Index", Model);
+                // return View("./Index", FilteredModel);
+
+                return View("Index");
             }
             catch
             {
@@ -83,13 +132,15 @@ namespace RentalApp.Controllers
         {
             try
             {
-                List<Property> Model = _property.ListProperty();
-
+                
+                return View();
                 // **********************************************************************************************
                 // FILTER MODEL WITH LOGGED IN USER ID?? 
                 // **********************************************************************************************
 
-                return View(Model);
+
+                //List<Property> Model = _property.ListProperty();
+                //return View(Model);
             }
             catch
             {
@@ -107,25 +158,22 @@ namespace RentalApp.Controllers
         // POST: PropertyController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(Property model)
         {
             try
             {
-                int addressId = Convert.ToInt32(collection["AddressId"][0]);
-                double sqFt = Convert.ToDouble(collection["SquareFootage"][0]);
-                int termId = Convert.ToInt32(collection["TermId"][0]);
-                string type = collection["Type"][0];
-                string facilities = collection["Facilities"][0];
-                bool availability = Convert.ToBoolean(collection["Availability"][0]);
 
-                int price = Convert.ToInt32(collection["Price"][0]);
-                // probably parse owner ID from log in?
-                // int ownerId = Convert.ToInt32(collection.ToList()[0].Value);
-                int ownerId = 1; // using a default for now
-               
-        
-                Property property = new Property(addressId, sqFt, facilities, termId, type, availability, price, ownerId);
-                _property.CreateProperty(property);
+                Property property = new Property(
+                    model.AddressId, 
+                    model.SquareFootage, 
+                    model.Facilities, 
+                    model.TermId, 
+                    model.Type, 
+                    model.Availability, 
+                    model.Price, 
+                    1 // manually making owner ID 1 right now until we have session management
+                    );
+				_propertyService.Create(_connectionString, property);
 
                 return RedirectToAction(nameof(Create));
             }
