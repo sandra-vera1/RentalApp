@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RentalApp.Models.User>
+﻿@model IEnumerable<RentalApp.ViewModels.UserViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,16 +13,16 @@
     <thead>
         <tr class="table-dark">
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                @Html.DisplayNameFor(model => model.user.UserName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserPhoneNumber)
+                @Html.DisplayNameFor(model => model.user.UserPhoneNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
+                @Html.DisplayNameFor(model => model.user.UserEmail)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserAccountName)
+                @Html.DisplayNameFor(model => model.user.UserAccountName)
             </th>
             <th></th>
         </tr>
@@ -31,21 +31,21 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                    @Html.DisplayFor(modelItem => item.user.UserName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserPhoneNumber)
+                    @Html.DisplayFor(modelItem => item.user.UserPhoneNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserEmail)
+                    @Html.DisplayFor(modelItem => item.user.UserEmail)
             </td>
             <td>
-                    @Html.DisplayFor(modelItem => item.UserAccountName)
+                    @Html.DisplayFor(modelItem => item.user.UserAccountName)
             </td>
             <td>
-                    @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.UserId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.UserId }, new { onclick = "return confirm('Are you sure you want to delete this address?');" })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.user.UserId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.user.UserId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.user.UserId }, new { onclick = "return confirm('Are you sure you want to delete this user?');" })
                    
             </td>
         </tr>

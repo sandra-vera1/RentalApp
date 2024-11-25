@@ -7,13 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <Compile Remove="Services\PropertyCreateService\**" />
+    <Compile Remove="Services\PropertyDetailService\**" />
+    <Content Remove="Services\PropertyCreateService\**" />
+    <Content Remove="Services\PropertyDetailService\**" />
+    <EmbeddedResource Remove="Services\PropertyCreateService\**" />
+    <EmbeddedResource Remove="Services\PropertyDetailService\**" />
+    <None Remove="Services\PropertyCreateService\**" />
+    <None Remove="Services\PropertyDetailService\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\PropertyCreateService\" />
-    <Folder Include="Services\PropertyDetailService\" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
 </Project>

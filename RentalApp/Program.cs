@@ -1,6 +1,6 @@
 using RentalApp;
 using RentalApp.Services.PropertyService;
-//using RentalApp.Services.PropertyServices;
+using RentalApp.Services.UserServices;
 
 var builder = WebApplication.CreateBuilder(args);
 // Bind the connection string from configuration
@@ -11,6 +11,7 @@ builder.Services.AddControllersWithViews();
 
 // Add interface injection to controller class
 builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 var app = builder.Build();

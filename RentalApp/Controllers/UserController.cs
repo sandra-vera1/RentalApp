@@ -1,23 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using RentalApp.Models;
+using RentalApp.Services.UserServices;
+using RentalApp.ViewModels;
 using System.Net;
 
 namespace RentalApp.Controllers
 {
     public class UserController : Controller
     {
-        private readonly User _user;
-        public UserController(IOptions<ConnectionStringOptions> options)
+        private readonly string _connectionString;
+        private readonly IUserService _userService;
+        public UserController(IOptions<ConnectionStringOptions> options,
+            IUserService userService)
         {
             // Retrieve the connection string from the options
-            string _connectionString = options.Value.Connection;
-			_user = new User(_connectionString);
+            _connectionString = options.Value.Connection;
+            _userService = userService;
         }
         // GET: UserController
         public ActionResult Index()
         {
-            List<User> Model = _user.ListUsers();
+            IEnumerable<UserViewModel> Model = _userService.ListUsers(_connectionString);
             return View(Model);
         }
 
@@ -46,7 +50,7 @@ namespace RentalApp.Controllers
 				string userEmail = collection["userEmail"][0];
                 int userAccountType = Convert.ToInt32(collection["userAccountType"][0]);
 				User user = new User(userName, password, userPhoneNumber, userEmail, userAccountType);
-				_user.CreateUser(user);
+                _userService.CreateUser(_connectionString, user);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -58,8 +62,8 @@ namespace RentalApp.Controllers
         // GET: UserController/Edit/5
         public ActionResult Edit(int id)
         {
-            List<User> users = _user.ListUsers();
-            User user = users.First(a => a.UserId == id);
+            IEnumerable<UserViewModel> users = _userService.ListUsers(_connectionString);
+            User user = users.First(a => a.user.UserId == id).user;
             return View(user);
         }
 
@@ -77,7 +81,7 @@ namespace RentalApp.Controllers
                 int userAccountType = Convert.ToInt32(collection["userAccountType"][0]);
                 User user = new User(userName, password, userPhoneNumber, userEmail, userAccountType);
                 user.UserId = id;
-                _user.EditUser(user);
+                _userService.EditUser(_connectionString, user);
                 return RedirectToAction(nameof(Index));
             }
             catch
