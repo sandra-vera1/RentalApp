@@ -34,8 +34,10 @@ namespace RentalApp.Controllers
         {
             try
             {
-                var Model = _propertyService.Get(_connectionString);
-                return View(Model);
+                PropertySearchViewModel propertiesAndSearch = new PropertySearchViewModel();
+
+				propertiesAndSearch.PropertyList = _propertyService.Get(_connectionString);
+                return View(propertiesAndSearch);
             }
             catch
             {
@@ -54,10 +56,14 @@ namespace RentalApp.Controllers
 
         // POST: PropertyController/Search
         [HttpPost]
-        public ActionResult Search(IFormCollection collection)
+        public IActionResult Search(PropertySearchViewModel filter)
         {
             try
             {
+
+				PropertySearchViewModel propertiesAndSearch = new PropertySearchViewModel();
+
+				propertiesAndSearch.PropertyList = _propertyService.Get(_connectionString);
 
 
                 //double sqFtMin = Convert.ToDouble(collection["SqFtMin"][0]);
@@ -67,23 +73,23 @@ namespace RentalApp.Controllers
                 double sqFtMin;
                 double sqFtMax;
 
-                string searchAll = collection["SearchAll"][0];
-                
-                double.TryParse(collection["PriceMin"][0], out priceMin);
-                priceMin = priceMin > 0 ? priceMin : double.MinValue;
-                double.TryParse(collection["PriceMax"][0], out priceMax);
-                priceMax = priceMax > 0 ? priceMax : double.MaxValue;
+                //string searchAll = collection["SearchAll"][0];
+
+                //double.TryParse(collection["PriceMin"][0], out priceMin);
+                //priceMin = priceMin > 0 ? priceMin : double.MinValue;
+                //double.TryParse(collection["PriceMax"][0], out priceMax);
+                //priceMax = priceMax > 0 ? priceMax : double.MaxValue;
 
 
-                double.TryParse(collection["sqFtMin"][0], out sqFtMin);
-                sqFtMin = sqFtMin > 0 ? sqFtMin : double.MinValue;
-                double.TryParse(collection["SqFtMax"][0], out sqFtMax);
-                sqFtMax = sqFtMax > 0 ? sqFtMax : double.MaxValue;
+                //double.TryParse(collection["sqFtMin"][0], out sqFtMin);
+                //sqFtMin = sqFtMin > 0 ? sqFtMin : double.MinValue;
+                //double.TryParse(collection["SqFtMax"][0], out sqFtMax);
+                //sqFtMax = sqFtMax > 0 ? sqFtMax : double.MaxValue;
 
-                string neighborhood = collection["Neighborhood"][0];
-                string type = collection["Type"][0];
-                string testAvail = collection["Availability"][0];
-                bool? availability = collection["Availability"][0] == "Availability" ? true : false;
+                //string neighborhood = collection["Neighborhood"][0];
+                //string type = collection["Type"][0];
+                //string testAvail = collection["Availability"][0];
+                //bool? availability = collection["Availability"][0] == "Availability" ? true : false;
                 //Convert.ToBoolean(collection["Availability"][0]);
                 //bool availability = collection["Availability"][0];
 
@@ -102,22 +108,33 @@ namespace RentalApp.Controllers
                 //double sqFtMin = Convert.ToDouble(collection["sqFtMin"][0]);
                 //double sqFtMax = Convert.ToDouble(collection["SqFtMax"][0]);
 
-                // List < Property> Model = _property.ListProperty();
-                //var FilteredModel = Model.Where(prop => prop.Price > priceMin)
-                //    .Where(prop => prop.Price < priceMax)
-                //    .Where(prop => prop.SquareFootage > sqFtMin)
-                //    .Where(prop => prop.SquareFootage < sqFtMax)
-                //    .Where(prop => prop.Type.ToLower() == type.ToLower() || type == "All")
-                //    .Where(prop => prop.Address.Neighborhood.Contains(neighborhood));
-                // Model.Contains(prop => prop.Price > minPrice);
+                //List < Property> Model = _property.ListProperty();
+                propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList.Where(prop => prop.Property.Price > filter.PriceMin)
+                    .Where(prop => prop.Property.Price < filter.PriceMax)
+                    .Where(prop => prop.Property.SquareFootage > filter.SqFtMin)
+                    .Where(prop => prop.Property.SquareFootage < filter.SqFtMax)
+                    .Where(prop => prop.Property.Type.ToLower() == filter.Type.ToLower() || filter.Type == "All");
+                if(filter.SearchAll != null)
+                {
+                    propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList
+                        .Where(prop => prop.Property.Address.StreetName.ToLower().Contains(filter.SearchAll.ToLower()));
+				}
+                if (filter.Neighborhood != null)
+                {
+					propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList
+						.Where(prop => prop.Property.Address.Neighborhood.ToLower().Contains(filter.Neighborhood.ToLower()));
+				}
+
+
+                 //Model.Contains(prop => prop.Property.Price > filter.MinPrice);
 
                 // return View("./Index", FilteredModel);
 
-                return View("Index");
+                return View("Index", propertiesAndSearch);
             }
             catch
             {
-                return View("Index");
+                return View("../Home/Index");
             }
             
         }

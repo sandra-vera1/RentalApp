@@ -1,4 +1,5 @@
-﻿@model IEnumerable<RentalApp.ViewModels.PropertyOwnerListView>
+﻿@model RentalApp.ViewModels.PropertySearchViewModel;
+
 
 @{
 	ViewData["Title"] = "Index";
@@ -16,31 +17,31 @@
 		  data-ajax-method="Post">
 		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 		<div class="form-group">
-			<label for="SearchAll">Search All</label>
+			<label asp-for="SearchAll">Search All</label>
 			<input id="SearchAll" name="SearchAll" />
 
 		</div>
 		<br />
 		<div class="form-group">
 
-			<label for="Availability">Available Now</label>
+			<label asp-for="Availability">Available Now</label>
 			<input id="Availability" name="Availability" type="checkbox" />
 
 		</div>
 		<br />
 		<div class="form-group">
 			<label>Price:</label>
-			<label for="PriceMin" class="control-label" type="number">Min</label>
+			<label asp-for="PriceMin" class="control-label" type="number">Min</label>
 			<input id="PriceMin" name="PriceMin" />
-			<label for="PriceMax" class="control-label">Max</label>
+			<label asp-for="PriceMax" class="control-label">Max</label>
 			<input id="PriceMax" name="PriceMax" />
 		</div>
 		<br />
 		<div class="form-group">
-			<label for="Neighborhood">Neighborhood</label>
+			<label asp-for="Neighborhood">Neighborhood</label>
 			<input id="Neighborhood" name="Neighborhood" />
 
-			<label for="Type">Type</label>
+			<label asp-for="Type">Type</label>
 			<select id="Type" name="Type">
 				<option value="All">All</option>
 				<option value="Storage">Storage</option>
@@ -50,9 +51,9 @@
 		<br />
 		<div class="form-group">
 			<label>Square Footage:</label>
-			<label for="SqFtMin" class="control-label">Min</label>
+			<label asp-for="SqFtMin" class="control-label">Min</label>
 			<input id="SqFtMin" name="SqFtMin" />
-			<label for="SqFtMax" class="control-label">Max</label>
+			<label asp-for="SqFtMax" class="control-label">Max</label>
 			<input id="SqFtMax" name="SqFtMax" />
 		</div>
 		<br />
@@ -77,40 +78,43 @@
 		<tr>
 
 			<th>
-				@Html.DisplayNameFor(model => model.Property.Address.StreetNumber)
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.Address.StreetNumber)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Property.Address.StreetName)
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.Address.StreetName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Property.Address.City)
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.Address.City)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Property.Address.ProvinceName)
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.Address.ProvinceName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Property.SquareFootage)
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.SquareFootage)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Property.Facilities)
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.Facilities)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Property.TermId)
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.TermId)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Property.Type)
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.Type)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Property.Availability)
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.Availability)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Property.Price)
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.Price)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.PropDisplay.Property.Address.Neighborhood)
 			</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model)
+		@foreach (var item in Model.PropertyList)
 		{
 			<tr>
 				<td>
@@ -145,6 +149,9 @@
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Property.Price)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Property.Address.Neighborhood)
 				</td>
 				<td>
 					@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
