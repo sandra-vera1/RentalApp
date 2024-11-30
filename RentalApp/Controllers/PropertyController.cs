@@ -1,11 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using RentalApp.Models;
 using RentalApp.ViewModels;
-//using RentalApp.Services.PropertyServices;
 using RentalApp.Services.PropertyService;
 
 
@@ -14,9 +11,6 @@ namespace RentalApp.Controllers
 {
     public class PropertyController : Controller
     {
-
-
-
         private readonly string _connectionString;
         private readonly IPropertyService _propertyService;
 

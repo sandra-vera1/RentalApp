@@ -1,4 +1,5 @@
 using RentalApp;
+using RentalApp.Services.AddressServices;
 using RentalApp.Services.PropertyService;
 using RentalApp.Services.UserServices;
 
@@ -12,6 +13,7 @@ builder.Services.AddControllersWithViews();
 // Add interface injection to controller class
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 
 var app = builder.Build();

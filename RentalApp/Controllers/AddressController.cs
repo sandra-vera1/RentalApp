@@ -1,29 +1,29 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using RentalApp.Models;
-using System.Diagnostics.Metrics;
-using System.Security.Principal;
+using RentalApp.Services.AddressServices;
+using RentalApp.ViewModels;
 
 namespace RentalApp.Controllers
 {
     public class AddressController : Controller
     {
         //create connection with Model)//step 3
-        private readonly Address _address;
-        public AddressController(IOptions<ConnectionStringOptions> options) //This parameter is for get the connection string
+        private readonly string _connectionString;
+        private readonly IAddressService _addressService;
+        public AddressController(IOptions<ConnectionStringOptions> options, //This parameter is for get the connection string
+            IAddressService addressService) 
         {
             // Retrieve the connection string from the options
-            string _connectionString = options.Value.Connection;
-            _address = new Address(_connectionString); // This line set the connection string to Model and for use this class
+            _connectionString = options.Value.Connection;
+            _addressService = addressService;
         }
 
         // [Address List step 2]
         // GET: AddressController
         public ActionResult Index()
         {
-            List <Address> Model = _address.ListAddress();
+            IEnumerable<AddressViewModel> Model = _addressService.ListAddress(_connectionString);
             return View(Model);
         }
 
@@ -36,7 +36,8 @@ namespace RentalApp.Controllers
         // GET: AddressController/Create
         public ActionResult Create()
         {
-            return View(_address);
+            Address address = new Address(_addressService.ListProvinces(_connectionString));
+            return View(address);
         }
 
         // POST: AddressController/Create
@@ -58,7 +59,7 @@ namespace RentalApp.Controllers
                 string PostalCode = collection.ToList()[7].Value;
                 int SuiteNumber = Convert.ToInt32(collection.ToList()[8].Value);
                 Address address = new Address(Neighborhood, StreetNumber, StreetName, City, Province, Country, PostalCode, SuiteNumber);
-                _address.CreateAddress(address); //This call the create method with the bridge that is in line 18
+                _addressService.CreateAddress(_connectionString, address); //This call the create method with the bridge that is in line 18
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -71,9 +72,8 @@ namespace RentalApp.Controllers
         // GET: AddressController/Edit/5
         public ActionResult Edit(int id)  
         {
-            List<Address> addresses = _address.ListAddress();
-            Address address = addresses.First(a => a.AddressId == id);
-            address.Provinces = _address.Provinces;
+            IEnumerable<AddressViewModel> addresses = _addressService.ListAddress(_connectionString);
+            AddressViewModel address = addresses.First(a => a.address.AddressId == id);
             return View(address);
         }
 
@@ -86,17 +86,17 @@ namespace RentalApp.Controllers
         {
             try
             {
-                string Neighborhood = collection["Neighborhood"][0];
-                int StreetNumber = Convert.ToInt32(collection["StreetNumber"][0]);
-                string StreetName = collection["StreetName"][0];
-                string City = collection["City"][0];
-                int Province = Convert.ToInt32(collection["Province"][0]);
-                string Country = collection["Country"][0];
-                string PostalCode = collection["PostalCode"][0];
-                int SuiteNumber = Convert.ToInt32(collection["SuiteNumber"][0]);
+                string Neighborhood = collection["address.Neighborhood"][0];
+                int StreetNumber = Convert.ToInt32(collection["address.StreetNumber"][0]);
+                string StreetName = collection["address.StreetName"][0];
+                string City = collection["address.City"][0];
+                int Province = Convert.ToInt32(collection["address.Province"][0]);
+                string Country = collection["address.Country"][0];
+                string PostalCode = collection["address.PostalCode"][0];
+                int SuiteNumber = Convert.ToInt32(collection["address.SuiteNumber"][0]);
                 Address address = new Address(Neighborhood, StreetNumber, StreetName, City, Province, Country, PostalCode, SuiteNumber);
                 address.AddressId = id;
-                _address.UpdateAddress(address);
+                _addressService.UpdateAddress(_connectionString, address);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -111,8 +111,8 @@ namespace RentalApp.Controllers
         public ActionResult Delete(int id)
         {
             try
-            {  
-                _address.DeleteAddress(id);
+            {
+                _addressService.DeleteAddress(_connectionString, id);
                 return RedirectToAction(nameof(Index));
             }
             catch

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using RentalApp.Models;
 using RentalApp.Services.UserServices;
 using RentalApp.ViewModels;
-using System.Net;
 
 namespace RentalApp.Controllers
 {

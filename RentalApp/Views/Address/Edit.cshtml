@@ -1,4 +1,4 @@
-﻿@model RentalApp.Models.Address
+﻿@model RentalApp.ViewModels.AddressViewModel
 
 @{
     ViewData["Title"] = "Edit"; // [Update Address] - step 4 create this View (file inside of Views/Address folder and always use the name Edit because of the default route) *@
@@ -13,52 +13,52 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Neighborhood" class="control-label"></label>
-                <input asp-for="Neighborhood" class="form-control" />
-                <span asp-validation-for="Neighborhood" class="text-danger"></span>
+                <label asp-for="address.Neighborhood" class="control-label"></label>
+                <input asp-for="address.Neighborhood" class="form-control" />
+                <span asp-validation-for="address.Neighborhood" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StreetNumber" class="control-label"></label>
-                <input asp-for="StreetNumber" class="form-control" />
-                <span asp-validation-for="StreetNumber" class="text-danger"></span>
+                <label asp-for="address.StreetNumber" class="control-label"></label>
+                <input asp-for="address.StreetNumber" class="form-control" />
+                <span asp-validation-for="address.StreetNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StreetName" class="control-label"></label>
-                <input asp-for="StreetName" class="form-control" />
-                <span asp-validation-for="StreetName" class="text-danger"></span>
+                <label asp-for="address.StreetName" class="control-label"></label>
+                <input asp-for="address.StreetName" class="form-control" />
+                <span asp-validation-for="address.StreetName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
+                <label asp-for="address.City" class="control-label"></label>
+                <input asp-for="address.City" class="form-control" />
+                <span asp-validation-for="address.City" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Province" class="control-label"></label>
-                <select asp-for="Province" class="form-control" id="selectProvince">
-                    @foreach (var item in Model.Provinces)
+                <label asp-for="address.Province" class="control-label"></label>
+                <select asp-for="address.Province" class="form-control" id="selectProvince">
+                    @foreach (var item in Model.address.Provinces)
                     {
-                        <option value="@item.Province">
+                        <option value="@item.ProvinceId">
                             @Html.DisplayFor(modelItem => item.ProvinceName)
                         </option>
 
                     }
                 </select>
-                <span asp-validation-for="Province" class="text-danger"></span>
+                <span asp-validation-for="address.Province" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control" />
-                <span asp-validation-for="Country" class="text-danger"></span>
+                <label asp-for="address.Country" class="control-label"></label>
+                <input asp-for="address.Country" class="form-control" />
+                <span asp-validation-for="address.Country" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PostalCode" class="control-label"></label>
-                <input maxlength="6" asp-for="PostalCode" class="form-control" />
-                <span asp-validation-for="PostalCode" class="text-danger"></span>
+                <label asp-for="address.PostalCode" class="control-label"></label>
+                <input maxlength="6" asp-for="address.PostalCode" class="form-control" />
+                <span asp-validation-for="address.PostalCode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SuiteNumber" class="control-label"></label>
-                <input asp-for="SuiteNumber" class="form-control" />
-                <span asp-validation-for="SuiteNumber" class="text-danger"></span>
+                <label asp-for="address.SuiteNumber" class="control-label"></label>
+                <input asp-for="address.SuiteNumber" class="form-control" />
+                <span asp-validation-for="address.SuiteNumber" class="text-danger"></span>
             </div>
             <br />
             <div class="form-group">

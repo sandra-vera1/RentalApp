@@ -42,7 +42,7 @@
                 <select asp-for="Province" class="form-control" id="selectProvince">
                     @foreach (var item in Model.Provinces)
                     {
-                        <option value="@item.Province">
+                        <option value="@item.ProvinceId">
                                 @Html.DisplayFor(modelItem => item.ProvinceName)
                         </option>
                             
