@@ -31,8 +31,9 @@ namespace RentalApp.Services.PropertyService
 
 
 
-						// Property data
-						double SqFt = Convert.ToDouble(dr.GetString("SqFt"));
+                        // Property data
+                        int PropertyId = dr.GetInt32("PropertyId");
+                        double SqFt = Convert.ToDouble(dr.GetString("SqFt"));
 						string Facilities = dr.GetString("Facilities");
 						string Type = dr.GetString("Type");
 						double Price = Convert.ToDouble(dr.GetDecimal("Price"));
@@ -41,6 +42,7 @@ namespace RentalApp.Services.PropertyService
 						bool Availability = dr.GetBoolean("Availability");
 						int TermId = dr.GetInt32("TermID");
 						Property prop = new Property(AddressId, SqFt, Facilities, TermId, Type, Availability, Price, OwnerId);
+						prop.SetPropertyId(PropertyId);
 
 						// Address data
 						string Neigborhood = dr.GetString("Neighborhood");
@@ -78,6 +80,37 @@ namespace RentalApp.Services.PropertyService
 			return properties;
 		}
 
+
+		public Property GetPropertyById(string connectionString, int id)
+		{
+			Property property = new Property();
+			using (SqlConnection con = new SqlConnection(connectionString))
+			{
+                con.Open();
+                string query = "SELECT PropertyID, SqFt, Facilities, Type, Price, AddressID, TermID, Availability FROM Properties WHERE PropertyID = @propertyID";
+				using (SqlCommand cmd = new SqlCommand(query, con))
+				{
+					cmd.Parameters.AddWithValue("@propertyID", id);
+                    SqlDataReader result = cmd.ExecuteReader();
+
+                    while (result.Read())
+                    {
+						property.PropertyId = Convert.ToInt32(result["PropertyID"]);
+                        property.SquareFootage = Convert.ToDouble(result["SqFt"]);
+                        property.Facilities = result["Facilities"].ToString();
+                        property.Type = result["Type"].ToString();
+                        property.Price = Convert.ToDouble(result["Price"]);
+                        property.AddressId = Convert.ToInt32(result["AddressID"]);
+                        property.TermId = Convert.ToInt32(result["TermID"]);
+                        property.Availability = result.GetBoolean("Availability");
+                    }
+
+                }
+			}
+
+                    return property;
+		}
+
 		public bool Create(string connectionString, Property property)
 		{
 			int transaction = 0;
@@ -108,6 +141,37 @@ namespace RentalApp.Services.PropertyService
 			//throw new NotImplementedException();
 		}
 
+
+		public bool Edit(string connectionString, Property property, int propertyID)
+		{
+            int transaction = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UpdateProperty", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@PropertyId", SqlDbType.Int).Value = propertyID;
+                    cmd.Parameters.Add("@SqFt", SqlDbType.VarChar).Value = property.SquareFootage;
+                    cmd.Parameters.Add("@Facilities", SqlDbType.VarChar).Value = property.Facilities;
+                    cmd.Parameters.Add("@Type", SqlDbType.VarChar).Value = property.Type;
+
+                    cmd.Parameters.Add("@Price", SqlDbType.Money).Value = property.Price;
+
+
+                    cmd.Parameters.Add("@AddressID", SqlDbType.Int).Value = property.AddressId;
+                    cmd.Parameters.Add("@TermID", SqlDbType.Int).Value = property.TermId;
+
+                    cmd.Parameters.Add("@Availability", SqlDbType.Bit).Value = property.Availability;
+
+                    con.Open();
+                    transaction = cmd.ExecuteNonQuery();
+                }
+            }
+            Console.WriteLine("Edit Success?!");
+            return transaction == 1;
+
+
+        }
         public IEnumerable<Property> Get()
         {
             throw new NotImplementedException();

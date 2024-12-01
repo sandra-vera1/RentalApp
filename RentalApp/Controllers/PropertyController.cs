@@ -203,21 +203,53 @@ namespace RentalApp.Controllers
         // GET: PropertyController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+
+            try
+            {
+                // retrieve property data
+                Property property = _propertyService.GetPropertyById(_connectionString, id);
+
+                // send property object to view - this allows us to pre-populate the form with current property info
+                return View(property);
+            }
+            catch
+            {
+                return View();
+            }
+
+
+
+
+
         }
 
         // POST: PropertyController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        // int id, IFormCollection collection
+        public ActionResult Edit(Property model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                Property property = new Property(
+                model.AddressId,
+                model.SquareFootage,
+                model.Facilities,
+                model.TermId,
+                model.Type,
+                model.Availability,
+                model.Price,
+                1 // manually making owner ID 1 right now until we have session management
+                );
+
+
+                _propertyService.Edit(_connectionString, property, model.PropertyId);
+
+                return RedirectToAction(nameof(MyProperties));
             }
             catch
             {
-                return View();
+                return View("Edit");
             }
         }
 
