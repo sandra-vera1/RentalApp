@@ -7,9 +7,9 @@ namespace RentalApp.Models
     public class Property
     {
         // private readonly string _connectionString;
-
-        public int PropertyId { get; private set; }
         // these all need to be public in order to use asp-for
+        public int PropertyId { get;  set; }
+        
         public int AddressId { get; set; }//added public
         public Address Address { get; set; } // to store address values ??
         public double SquareFootage { get; set; }
@@ -37,6 +37,11 @@ namespace RentalApp.Models
             Availability = availa;
             Price = price;
             OwnerId = ownerId;
+        }
+
+        public void SetPropertyId(int id)
+        {
+            PropertyId = id;
         }
 
         //public Property(string connectionString)
