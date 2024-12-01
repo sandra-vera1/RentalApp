@@ -51,12 +51,14 @@ namespace RentalApp.Services.PropertyService
 						string Country = dr.GetString("Country");
 						int SuiteNumber = dr.IsDBNull("SuiteNumber") ? 0 : dr.GetInt32("SuiteNumber");
 						string PostalCode = dr.GetString("PostalCode");
-						prop.Address = new Address(Neigborhood, StreetNumber, StreetName, City,
+                        string ProvinceName = dr.GetString("ProvinceName");
+                        prop.Address = new Address(Neigborhood, StreetNumber, StreetName, City,
 							ProvinceID, Country, PostalCode, SuiteNumber);
+						prop.Address.ProvinceName = ProvinceName;
 
 
-						// Owner data
-						string name = dr.GetString("FullName");
+                        // Owner data
+                        string name = dr.GetString("FullName");
 						string phoneNum = dr.GetString("PhoneNumber");
 						string email = dr.GetString("Email");
 
@@ -65,7 +67,7 @@ namespace RentalApp.Services.PropertyService
 
 						PropertyOwnerListView propDetails = new PropertyOwnerListView(prop, owner);
 						propDetails.Term = dr.GetString("TermName");
-						propDetails.Province = dr.GetString("ProvinceName");
+						propDetails.Province = ProvinceName;
 						properties.Add(propDetails);
 
 					}

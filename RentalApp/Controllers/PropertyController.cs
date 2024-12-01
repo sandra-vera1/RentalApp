@@ -143,15 +143,21 @@ namespace RentalApp.Controllers
         {
             try
             {
-                
-                return View();
+                int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);//UserId from the session
                 // **********************************************************************************************
                 // FILTER MODEL WITH LOGGED IN USER ID?? 
                 // **********************************************************************************************
+                
+                PropertySearchViewModel propertiesAndSearch = new PropertySearchViewModel();
+                propertiesAndSearch.PropertyList = _propertyService.Get(_connectionString);
+                propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList.Where(p => p.Property.OwnerId == UserId);
 
-
-                //List<Property> Model = _property.ListProperty();
-                //return View(Model);
+                List<Property> properties = new List<Property>();
+                foreach (var property in propertiesAndSearch.PropertyList)
+                {
+                    properties.Add(property.Property);
+                }
+                return View(properties);
             }
             catch
             {
