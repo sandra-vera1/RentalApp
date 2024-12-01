@@ -70,8 +70,6 @@
 				<td>
 					@* // [Update Address step 3] Put object Id in this case is item.AddressId*@
 					@Html.ActionLink("Edit", "Edit", new { id = item.address.AddressId }) |
-					@Html.ActionLink("Details", "Details", new { id = item.address.AddressId }) |
-					@* // [DeleteAddress step 3] Put object Id in this case is item.AddressId*@
 					@Html.ActionLink("Delete", "Delete", new { id = item.address.AddressId }, new { onclick = "return confirm('Are you sure you want to delete this address?');" })
 				</td>
 			</tr>

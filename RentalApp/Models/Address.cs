@@ -13,6 +13,8 @@
         public int SuiteNumber { get; private set; }
 
         public string ProvinceName { get; set; } // had to change this set to public to modify it when getting prop data
+
+        public int UserId { get; set; }
         public List<Province> Provinces { get; set; }
 
         public Address(List<Province> provinces)

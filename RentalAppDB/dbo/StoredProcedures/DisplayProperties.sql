@@ -2,7 +2,7 @@
 AS
 BEGIN
 	SELECT [SqFt], [Facilities], [Type], [Price], [OwnerID], p.[AddressID], [Availability], t.[TermID],
-	t.[TermName], [UserName], [PhoneNumber], [Email], [Neighborhood], [StreetNumber], [StreetName], 
+	t.[TermName], [FullName], [PhoneNumber], [Email], [Neighborhood], [StreetNumber], [StreetName], 
 	[City], a.[ProvinceID], pr.[ProvinceName], [Country], [SuiteNumber], [PostalCode]
 	FROM Properties p JOIN Term  t ON p.TermID = t.TermID
 	JOIN Users u ON u.UserID = p.OwnerID

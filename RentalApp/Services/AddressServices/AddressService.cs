@@ -15,15 +15,16 @@ namespace RentalApp.Services.AddressServices
                 using (SqlCommand cmd = new SqlCommand("SaveAddress", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@Neighborhood", SqlDbType.VarChar).Value = address.Neighborhood;
+					cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = address.UserId;
+					cmd.Parameters.Add("@Neighborhood", SqlDbType.VarChar).Value = address.Neighborhood;
                     cmd.Parameters.Add("@StreetNumber", SqlDbType.Int).Value = address.StreetNumber;
                     cmd.Parameters.Add("@StreetName", SqlDbType.VarChar).Value = address.StreetName;
                     cmd.Parameters.Add("@City", SqlDbType.VarChar).Value = address.City;
                     cmd.Parameters.Add("@ProvinceID", SqlDbType.Int).Value = address.Province;
                     cmd.Parameters.Add("@Country", SqlDbType.VarChar).Value = address.Country;
                     cmd.Parameters.Add("@SuiteNumber", SqlDbType.Int).Value = address.SuiteNumber;
-                    cmd.Parameters.Add("@PostalCode", SqlDbType.Char).Value = address.PostalCode;
-                    con.Open();
+					cmd.Parameters.Add("@PostalCode", SqlDbType.Char).Value = address.PostalCode;
+					con.Open();
                     transaction = cmd.ExecuteNonQuery();
                 }
             }
@@ -69,9 +70,10 @@ namespace RentalApp.Services.AddressServices
                         string PostalCode = dr.GetString("PostalCode");
                         Address address = new Address(Neigborhood, StreetNumber, StreetName, City,
                             ProvinceID, Country, PostalCode, SuiteNumber);
-                        address.AddressId = dr.GetInt32("AddressID");
-                        address.ProvinceName = dr.GetString("ProvinceName");
-                        address.Provinces = provinces;
+						address.AddressId = dr.GetInt32("AddressID");
+						address.UserId = dr.GetInt32("UserID");
+						address.ProvinceName = dr.GetString("ProvinceName");
+						address.Provinces = provinces;
                         AddressViewModel addressViewModel = new AddressViewModel(address);
                         addresses.Add(addressViewModel);
                     }

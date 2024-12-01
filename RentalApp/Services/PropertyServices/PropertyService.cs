@@ -56,7 +56,7 @@ namespace RentalApp.Services.PropertyService
 
 
 						// Owner data
-						string name = dr.GetString("UserName");
+						string name = dr.GetString("FullName");
 						string phoneNum = dr.GetString("PhoneNumber");
 						string email = dr.GetString("Email");
 

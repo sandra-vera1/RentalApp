@@ -22,3 +22,20 @@ body {
     background-color: antiquewhite;
 }
 
+.Home1{
+    text-align: left;
+    font-family:'Bell MT';
+    font-size:large;
+    color:darkolivegreen;
+    font-style:inherit;
+    font-weight:bold;
+    
+}
+
+.custom-bg {
+    background-image: url('images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    z-index: 0; /* Make sure the background is behind the content */
+}

@@ -1,0 +1,37 @@
+﻿@model RentalApp.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>@ViewData["Title"]</h1>
+<!-- Display Validation Errors -->
+@if (Model != null && !string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+}
+<body class="custom-bg d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg p-4" style="width: 400px;">
+        <div class="card-body">
+<form method="post">
+                <div class="mb-3">
+                    <label for="useremail" class="form-label">Email:</label>
+                    <input class="form-control"  type="email" id="useremail" name="useremail" required />
+    </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input class="form-control" type="password" id="password" name="password" required />
+    </div>
+    <div class="mb-3">
+         <button type="submit" class="btn btn-dark w-100">Login</button>
+    </div>
+    <div class="mb-3">
+      @Html.ActionLink("Create User", "Create", "User")
+    </div>
+</form>
+</div>
+</div>
+   
+</body>

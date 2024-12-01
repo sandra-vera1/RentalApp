@@ -9,5 +9,7 @@
     [SuiteNumber] INT NULL, 
     [PostalCode] CHAR(6) NOT NULL,
     [ProvinceID] INT NOT NULL, 
-    CONSTRAINT [FK_Address_ToProvinces] FOREIGN KEY (ProvinceID) REFERENCES Provinces(ProvinceID)
+    [UserID] INT NULL, 
+    CONSTRAINT [FK_Address_ToProvinces] FOREIGN KEY (ProvinceID) REFERENCES Provinces(ProvinceID), 
+    CONSTRAINT [FK_Address_ToUser] FOREIGN KEY ([UserID]) REFERENCES [Users]([UserID])
 )

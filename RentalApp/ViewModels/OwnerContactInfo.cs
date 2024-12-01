@@ -2,7 +2,7 @@
 {
     public class OwnerContactInfo
     {
-        public string UserName { get; set; }
+        public string FullName { get; set; }
 
         public string UserPhoneNumber { get; set; }
 
@@ -12,7 +12,7 @@
         public OwnerContactInfo() { }
         public OwnerContactInfo(string name, string phoneNumber, string email)
         {
-            UserName = name;
+			FullName = name;
             UserPhoneNumber = phoneNumber;
             UserEmail = email;
         }

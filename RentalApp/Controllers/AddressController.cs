@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using RentalApp.Models;
 using RentalApp.Services.AddressServices;
@@ -6,6 +7,7 @@ using RentalApp.ViewModels;
 
 namespace RentalApp.Controllers
 {
+    [Authorize(Policy = "OwnerOnly")]
     public class AddressController : Controller
     {
         //create connection with Model)//step 3
@@ -17,14 +19,16 @@ namespace RentalApp.Controllers
             // Retrieve the connection string from the options
             _connectionString = options.Value.Connection;
             _addressService = addressService;
-        }
+		}
 
         // [Address List step 2]
         // GET: AddressController
         public ActionResult Index()
-        {
-            IEnumerable<AddressViewModel> Model = _addressService.ListAddress(_connectionString);
-            return View(Model);
+		{
+			int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);//UserId from the session
+			IEnumerable<AddressViewModel> Model = _addressService.ListAddress(_connectionString);
+			Model = Model.Where(a => a.address.UserId == UserId);
+			return View(Model);
         }
 
         // GET: AddressController/Details/5
@@ -49,8 +53,10 @@ namespace RentalApp.Controllers
         {
             try
             {  //This is the bridge between the View and Controller. In other words this cast the object that is in the interface.
-               //int AddressId it is not necessary because the ID field (DB) is type of Identity
-                string Neighborhood = collection.ToList()[0].Value;
+			   //int AddressId it is not necessary because the ID field (DB) is type of Identity
+
+				int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);//UserId from the session
+				string Neighborhood = collection.ToList()[0].Value;
                 int StreetNumber = Convert.ToInt32(collection.ToList()[1].Value);
                 string StreetName = collection.ToList()[3].Value;
                 string City = collection.ToList()[4].Value;
@@ -58,8 +64,11 @@ namespace RentalApp.Controllers
                 string Country = collection.ToList()[6].Value;
                 string PostalCode = collection.ToList()[7].Value;
                 int SuiteNumber = Convert.ToInt32(collection.ToList()[8].Value);
-                Address address = new Address(Neighborhood, StreetNumber, StreetName, City, Province, Country, PostalCode, SuiteNumber);
-                _addressService.CreateAddress(_connectionString, address); //This call the create method with the bridge that is in line 18
+				Address address = new Address(Neighborhood, StreetNumber, StreetName, City, Province, Country, PostalCode, SuiteNumber)
+				{
+					UserId = UserId
+				};
+				_addressService.CreateAddress(_connectionString, address); //This call the create method with the bridge that is in line 18
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -73,7 +82,7 @@ namespace RentalApp.Controllers
         public ActionResult Edit(int id)  
         {
             IEnumerable<AddressViewModel> addresses = _addressService.ListAddress(_connectionString);
-            AddressViewModel address = addresses.First(a => a.address.AddressId == id);
+			AddressViewModel address = addresses.First(a => a.address.AddressId == id);
             return View(address);
         }
 

@@ -15,7 +15,7 @@ namespace RentalApp.Services.UserServices
                 using (SqlCommand cmd = new SqlCommand("SaveUser", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@UserName", SqlDbType.VarChar).Value = user.UserName;
+                    cmd.Parameters.Add("@FullName", SqlDbType.VarChar).Value = user.FullName;
                     cmd.Parameters.Add("@Password", SqlDbType.VarChar).Value = user.Password;
                     cmd.Parameters.Add("@PhoneNumber", SqlDbType.VarChar).Value = user.UserPhoneNumber;
                     cmd.Parameters.Add("@Email", SqlDbType.VarChar).Value = user.UserEmail;
@@ -41,10 +41,9 @@ namespace RentalApp.Services.UserServices
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = user.UserId;
-                    cmd.Parameters.Add("@UserName", SqlDbType.VarChar).Value = user.UserName;
+                    cmd.Parameters.Add("@FullName", SqlDbType.VarChar).Value = user.FullName;
                     cmd.Parameters.Add("@Password", SqlDbType.VarChar).Value = user.Password;
                     cmd.Parameters.Add("@PhoneNumber", SqlDbType.VarChar).Value = user.UserPhoneNumber;
-                    cmd.Parameters.Add("@Email", SqlDbType.VarChar).Value = user.UserEmail;
                     cmd.Parameters.Add("@AccountTypeID", SqlDbType.Int).Value = user.UserAccountType;
                     con.Open();
                     transaction = cmd.ExecuteNonQuery();
@@ -66,12 +65,12 @@ namespace RentalApp.Services.UserServices
                     while (dr.Read())
                     {
 
-                        string UserName = dr.GetString("UserName");
+                        string FullName = dr.GetString("FullName");
                         string Password = dr.GetString("Password");
                         string UserPhoneNumber = dr.GetString("PhoneNumber");
                         string UserEmail = dr.GetString("Email");
                         int UserAccountType = dr.GetInt32("AccountTypeID");
-                        User user = new User(UserName, Password, UserPhoneNumber, UserEmail,
+                        User user = new User(FullName, Password, UserPhoneNumber, UserEmail,
                             UserAccountType);
                         user.UserId = dr.GetInt32("UserID");
                         user.UserAccountName = dr.GetString("AccountName");

@@ -82,8 +82,12 @@
     <Build Include="dbo\StoredProcedures\GetAddressByID.sql" />
     <Build Include="dbo\StoredProcedures\DisplayUsers.sql" />
     <Build Include="dbo\StoredProcedures\UpdateUser.sql" />
+    <Build Include="dbo\StoredProcedures\CheckLogin.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Script\CreateDB_Tables.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="RentalAppDB.refactorlog" />
   </ItemGroup>
 </Project>

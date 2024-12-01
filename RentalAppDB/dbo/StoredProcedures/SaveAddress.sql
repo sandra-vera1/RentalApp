@@ -1,4 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[SaveAddress]
+	@UserId INT,
 	@Neighborhood varchar(100),
 	@StreetNumber int,
 	@StreetName varchar(150),
@@ -9,6 +10,6 @@
 	@PostalCode char(6)
 
 AS BEGIN
-	INSERT INTO [dbo].[Address]([Neighborhood], [StreetNumber], [StreetName], [City], [ProvinceID], [Country],[SuiteNumber],[PostalCode])
-	VALUES(@Neighborhood, @StreetNumber, @StreetName, @City, @ProvinceID, @Country, @SuiteNumber, @PostalCode);
+	INSERT INTO [dbo].[Address]([UserID], [Neighborhood], [StreetNumber], [StreetName], [City], [ProvinceID], [Country],[SuiteNumber],[PostalCode])
+	VALUES(@UserId, @Neighborhood, @StreetNumber, @StreetName, @City, @ProvinceID, @Country, @SuiteNumber, @PostalCode);
 END
