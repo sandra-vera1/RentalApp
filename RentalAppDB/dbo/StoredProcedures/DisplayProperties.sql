@@ -1,7 +1,7 @@
 ﻿CREATE OR ALTER PROCEDURE [dbo].[DisplayProperties]
 AS
 BEGIN
-	SELECT [SqFt], [Facilities], [Type], [Price], [OwnerID], p.[AddressID], [Availability], t.[TermID],
+	SELECT [PropertyID], [SqFt], [Facilities], [Type], [Price], [OwnerID], p.[AddressID], [Availability], t.[TermID],
 	t.[TermName], [FullName], [PhoneNumber], [Email], [Neighborhood], [StreetNumber], [StreetName], 
 	[City], a.[ProvinceID], pr.[ProvinceName], [Country], [SuiteNumber], [PostalCode]
 	FROM Properties p JOIN Term  t ON p.TermID = t.TermID
