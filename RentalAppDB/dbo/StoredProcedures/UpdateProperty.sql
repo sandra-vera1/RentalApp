@@ -1,5 +1,3 @@
-
-
 CREATE OR ALTER PROCEDURE [dbo].[UpdateProperty]
 	@PropertyId INT,
 	@SqFt VARCHAR(30),

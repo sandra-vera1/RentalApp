@@ -72,7 +72,8 @@
 	<thead>
 		<a href="d:\school\sodv2202 oop\sodv2202_groupproject_rentalapp\rentalapp\rentalapp\views\property\create.cshtml">d:\school\sodv2202 oop\sodv2202_groupproject_rentalapp\rentalapp\rentalapp\views\property\create.cshtml</a>
 		<br />
-		@Html.ActionLink("Create Property", "Create") <--- Is this what your were looking for? Html.ActionLink("Link text", "Action" )
+		@Html.ActionLink("Create Property", "Create")
+		<--- Is this what your were looking for? Html.ActionLink("Link text", "Action" )
 		<br />
 		<a href="/Property/Create">Create Property</a> <--- Created manually, the href should have the "/ControllerName/Action" if you need to pass a parameter like the id, you add at the end like "/ControllerName/Action/15"
 		<tr>
@@ -154,9 +155,20 @@
 					@Html.DisplayFor(modelItem => item.Property.Address.Neighborhood)
 				</td>
 				<td>
-					@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+					@if (User.IsInRole("Owner"))
+					{
+						@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+						@:|
+						@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+						@:|
+						@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+					}
+					@if (User.IsInRole("Renter"))
+					{
+						@Html.ActionLink("Add Favorite", "AddFavorite", new { id = item.Property.PropertyId })
+						@:|
+						@Html.ActionLink("Quote", "Quote", new { id = item.Property.PropertyId }, new { target = "_blank" })
+					}
 				</td>
 			</tr>
 		}

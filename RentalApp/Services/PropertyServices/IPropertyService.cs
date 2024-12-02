@@ -13,5 +13,12 @@ namespace RentalApp.Services.PropertyService
 
 		public Property GetPropertyById(string connectionString, int id);
 
+
+        public bool CreateFavorite(string connectionString, int PropertyID, int RenterID);
+
+        public bool DeleteFavorite(string connectionString, int FavoriteID);
+
+        IEnumerable<PropertyFavoriteListView> GetFavoriteList(string connectionString, int RenterID);
+
     }
 }

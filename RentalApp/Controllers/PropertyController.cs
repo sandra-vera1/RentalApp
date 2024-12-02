@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using RentalApp.Models;
 using RentalApp.ViewModels;
 using RentalApp.Services.PropertyService;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -273,5 +274,47 @@ namespace RentalApp.Controllers
                 return View();
             }
         }
-    }
+
+		// GET: PropertyController/Favorites
+		[Authorize(Policy = "RenterOnly")]
+		public ActionResult Favorites()
+		{
+			try
+			{
+				int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);//UserId from the session
+                IEnumerable <PropertyFavoriteListView> FavoriteList = _propertyService.GetFavoriteList(_connectionString, UserId);
+				return View(FavoriteList);
+			}
+			catch
+			{
+				// Redirect to home page on error right now
+				return View("../Home/Index");
+			}
+		}
+
+        // GET: PropertyController/DeleteFavorite/5
+        [Authorize(Policy = "RenterOnly")]
+		public ActionResult DeleteFavorite(int id)
+        {
+            _propertyService.DeleteFavorite(_connectionString, id);
+            return RedirectToAction(nameof(Favorites));
+		}
+
+        // GET: PropertyController/AddFavorite/5
+        [Authorize(Policy = "RenterOnly")]
+		public ActionResult AddFavorite(int id)
+		{
+			int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);//UserId from the session
+			_propertyService.CreateFavorite(_connectionString, id, UserId);
+			return RedirectToAction(nameof(Index));
+		}
+
+		// GET: PropertyController/AddFavorite/5
+		[Authorize(Policy = "RenterOnly")]
+		public ActionResult Quote(int id)
+		{
+			int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);//UserId from the session
+			return View();
+		}
+	}
 }
