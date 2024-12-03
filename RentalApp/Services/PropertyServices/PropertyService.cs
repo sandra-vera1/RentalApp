@@ -254,5 +254,72 @@ namespace RentalApp.Services.PropertyService
 			}
 			return FavoriteList;
 		}
-	}
+
+        public QuoteViewModel GetPropertyQuote(string connectionString, int PropertyId)
+        {
+            QuoteViewModel quoteViewModel = new QuoteViewModel();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("QuotedInformation", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@PropertyID", SqlDbType.Int).Value = PropertyId;
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        quoteViewModel.PropertyID = dr.GetInt32("PropertyId");
+                        quoteViewModel.SqFt = dr.GetString("SqFt");
+                        quoteViewModel.Facilities = dr.GetString("Facilities");
+                        quoteViewModel.Type = dr.GetString("Type");
+                        quoteViewModel.Price = Convert.ToDouble(dr.GetDecimal("Price"));
+                        quoteViewModel.Availability = dr.GetBoolean("Availability") ? "Yes" : "No";
+						quoteViewModel.TermID = dr.GetInt32("TermID");
+                        quoteViewModel.TermName = dr.GetString("TermName");
+                        quoteViewModel.FullName = dr.GetString("FullName");
+                        quoteViewModel.PhoneNumber = dr.GetString("PhoneNumber");
+                        quoteViewModel.Email = dr.GetString("Email");
+                        quoteViewModel.Neighborhood = dr.GetString("Neighborhood");
+                        quoteViewModel.StreetNumber = dr.GetInt32("StreetNumber").ToString();
+                        quoteViewModel.StreetName = dr.GetString("StreetName");
+                        quoteViewModel.City = dr.GetString("City");
+                        quoteViewModel.ProvinceName = dr.GetString("ProvinceName");
+                        quoteViewModel.Country = dr.GetString("Country");
+                        quoteViewModel.SuiteNumber = dr.IsDBNull("SuiteNumber") ? "" : dr.GetInt32("SuiteNumber").ToString();
+                        quoteViewModel.PostalCode = dr.GetString("PostalCode");
+						quoteViewModel.Terms = GetTerms(quoteViewModel.TermID);
+                    }
+                }
+            }
+            return quoteViewModel;
+        }
+
+		private List<int> GetTerms(int TermId)
+		{
+			switch (TermId)
+            {
+                case 1:
+                    return LoopTerms(2, 5);
+                case 2:
+                    return LoopTerms(2, 6);
+                case 3:
+					return LoopTerms(10, 24);
+                case 4:
+                    return LoopTerms(60, 90);
+                default:
+					return new List<int>();
+			}
+		}
+
+		private List<int> LoopTerms(int init, int end)
+        {
+			List<int> terms = new List<int>();
+            for (int i = init; i <= end; i++)
+            {
+                terms.Add(i);
+            }
+			return terms;
+        }
+    }
 }

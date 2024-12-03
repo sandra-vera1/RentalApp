@@ -19,6 +19,7 @@ namespace RentalApp.Services.PropertyService
         public bool DeleteFavorite(string connectionString, int FavoriteID);
 
         IEnumerable<PropertyFavoriteListView> GetFavoriteList(string connectionString, int RenterID);
+        public QuoteViewModel GetPropertyQuote(string connectionString, int PropertyId);
 
     }
 }

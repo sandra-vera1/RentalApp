@@ -5,6 +5,9 @@ using RentalApp.Models;
 using RentalApp.ViewModels;
 using RentalApp.Services.PropertyService;
 using Microsoft.AspNetCore.Authorization;
+using RentalApp.Services.QuoteServices;
+using System;
+using System.Text.Json;
 
 
 
@@ -309,12 +312,25 @@ namespace RentalApp.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		// GET: PropertyController/AddFavorite/5
-		[Authorize(Policy = "RenterOnly")]
+        // GET: PropertyController/Quote/5
+        [Authorize(Policy = "RenterOnly")]
 		public ActionResult Quote(int id)
 		{
-			int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);//UserId from the session
-			return View();
-		}
-	}
+            QuoteViewModel quoteViewModel = _propertyService.GetPropertyQuote(_connectionString, id);
+            return View(quoteViewModel);
+        }
+
+        // Post: PropertyController/Quote
+        [Authorize(Policy = "RenterOnly")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Quote(QuoteViewModel quoteViewModelInput)
+        {
+            int TermDuration = quoteViewModelInput.TermDuration;
+            quoteViewModelInput = JsonSerializer.Deserialize<QuoteViewModel>(quoteViewModelInput.jsonObj);
+            quoteViewModelInput.TermDuration = TermDuration;
+			QuoteTask.RunTask(ref quoteViewModelInput);
+            return View(quoteViewModelInput);
+        }
+    }
 }

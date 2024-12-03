@@ -1,74 +1,193 @@
-﻿@model RentalApp.ViewModels.QuoteViewModel
+﻿@using System.Text.Json
+@model RentalApp.ViewModels.QuoteViewModel
 
 @{
-    ViewData["Title"] = "Quote";
+	ViewData["Title"] = "Quote";
 }
 
-<h1>Quote</h1>
+<h1>Property Quote</h1>
+<p>Thank you for considering our rental services. We are pleased to offer you a quote for the available property based on your needs.</p>
 
+<p>Please, select the term duration according to the property term (year, month, week or day):</p>
+<table>
+	<tr>
+		<td>
+			<form asp-action="Quote" asp-controller="Property" method="post">
+				<div class="form-group col-sm-10">
+					<div class="form-group">
+						<label asp-for="TermDuration" class="control-label"><b>Term Duration:</b></label>
+						<select asp-for="TermDuration" class="form-control">
+							@foreach (int term in Model.Terms)
+							{
+								<option value="@term">@term</option>
+							}
+						</select>
+						<span asp-validation-for="TermDuration" class="text-danger"></span>
+					</div>
+					<textarea readonly hidden name="jsonObj">@Html.Raw(JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = null }))</textarea>
+					<br />
+					<input type="submit" value="Generate Quote" class="btn btn-secondary" />
+
+				</div>
+			</form>
+		</td>
+	</tr>
+</table>
 <div>
-    <h4>QuoteViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SqFt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SqFt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Facilities)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Facilities)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TermName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TermName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OwnerInformation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OwnerInformation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExpiresBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExpiresBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RentalDuration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RentalDuration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Deposit)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Deposit)
-        </dd>
-    </dl>
+	<br />
+	<h4>Property Information</h4>
+	<hr />
+	<table>
+		<tr>
+			<td class="col-md-6">
+				<dl class="row">
+					<dt class="col-sm-4">
+						Term
+					</dt>
+					<dd class="col-sm-8">
+						@Html.DisplayFor(model => model.TermName)
+					</dd>
+					<dt class="col-sm-4">
+						@Html.DisplayNameFor(model => model.Type)
+					</dt>
+					<dd class="col-sm-8">
+						@Html.DisplayFor(model => model.Type)
+					</dd>
+					<dt class="col-sm-4">
+						@Html.DisplayNameFor(model => model.Neighborhood)
+					</dt>
+					<dd class="col-sm-8">
+						@Html.DisplayFor(model => model.Neighborhood)
+					</dd>
+					<dt class="col-sm-4">
+						Address
+					</dt>
+					<dd class="col-sm-8">
+						@String.Format("{0} {1} - {2} / {3} {4} {5} / {6}", Model.Country, Model.ProvinceName, Model.City, Model.StreetName, Model.StreetNumber, Model.SuiteNumber, Model.PostalCode)
+					</dd>
+				</dl>
+			</td>
+			<td class="col-md-6">
+				<dl class="row">
+					<dt class="col-sm-4">
+						@Html.DisplayNameFor(model => model.Availability)
+					</dt>
+					<dd class="col-sm-8">
+						@Html.DisplayFor(model => model.Availability)
+					</dd>
+					<dt class="col-sm-4">
+						@Html.DisplayNameFor(model => model.SqFt)
+					</dt>
+					<dd class="col-sm-8">
+						@Html.DisplayFor(model => model.SqFt)
+					</dd>
+					<dt class="col-sm-4">
+						@Html.DisplayNameFor(model => model.Facilities)
+					</dt>
+					<dd class="col-sm-8">
+						@Html.DisplayFor(model => model.Facilities)
+					</dd>
+					<dt class="col-sm-4">
+						@Html.DisplayNameFor(model => model.Price)
+					</dt>
+					<dd class="col-sm-8">
+						@String.Format("${0}", Model.Price)
+					</dd>
+				</dl>
+			</td>
+		</tr>
+	</table>
+	<dl class="row">
+		<br />
+		<h4>Owner Information</h4>
+		<hr />
+		<dt class="col-sm-2">
+			Full name
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.FullName)
+		</dd>
+		<dt class="col-sm-2">
+			Phone number
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.PhoneNumber)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Email)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Email)
+		</dd>
+
+	</dl>
+	@if (Model.TermDuration != 0)
+	{
+		<br />
+		<h4>Quote Details</h4>
+		<hr />
+		<table>
+			<tr>
+				<td class="col-md-6">
+					<dl class="row">
+						<dt class="col-sm-4">
+							Expires by
+						</dt>
+						<dd class="col-sm-8">
+							<b>@Html.DisplayFor(model => model.ExpiresBy)</b>
+						</dd>
+					</dl>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td class="col-md-6">
+					<dl class="row">
+						<dt class="col-sm-4">
+							@String.Format("{0} duration", Model.TermName)
+						</dt>
+						<dd class="col-sm-8">
+							@Html.DisplayFor(model => model.TermDuration)
+						</dd>
+						<dt class="col-sm-4">
+							Discount percent
+						</dt>
+						<dd class="col-sm-8">
+							@String.Format("{0}%", Model.DiscountPercent)
+						</dd>
+						<dt class="col-sm-4">
+							Price per term
+						</dt>
+						<dd class="col-sm-8">
+							@String.Format("${0}", Model.DiscountPrice)
+						</dd>
+					</dl>
+				</td>
+				<td class="col-md-6">
+					<dl class="row">
+						<dt class="col-sm-4">
+							Security deposit
+						</dt>
+						<dd class="col-sm-8">
+							@String.Format("${0} (refundable)", Model.SecurityDeposit)
+						</dd>
+						<dt class="col-sm-4">
+							Late fee
+						</dt>
+						<dd class="col-sm-8">
+							@String.Format("${0}/day if overdue after 5 days", Model.LateFee)
+						</dd>
+						<dt class="col-sm-4">
+							@Html.DisplayNameFor(model => model.Insurance)
+						</dt>
+						<dd class="col-sm-8">
+							@String.Format("${0}/month", Model.Insurance)
+						</dd>
+					</dl>
+				</td>
+			</tr>
+		</table>
+	}
 </div>
+
+
