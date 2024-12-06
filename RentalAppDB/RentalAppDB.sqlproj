@@ -89,6 +89,9 @@
     <Build Include="dbo\StoredProcedures\DeleteFavoriteP.sql" />
     <Build Include="dbo\StoredProcedures\DisplayFavoriteListWithOwners.sql" />
     <Build Include="dbo\StoredProcedures\QuotedInformation.sql" />
+    <Build Include="dbo\StoredProcedures\DeleteProperty.sql" />
+    <Build Include="dbo\StoredProcedures\GetTerms.sql" />
+    <Build Include="dbo\StoredProcedures\GetAddressesOfUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Script\CreateDB_Tables.sql" />
