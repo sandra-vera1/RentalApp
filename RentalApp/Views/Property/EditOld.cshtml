@@ -1,33 +1,23 @@
-﻿@model RentalApp.ViewModels.CreatePropertyViewModel
+﻿@model RentalApp.Models.Property
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>EditNew</h1>
+<h1>Edit</h1>
 
-<h4>CreatePropertyViewModel</h4>
+<h4>Property</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" asp-controller="Property" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*Add hidden input that includes property ID to send with form data to allow updating correct property*@
             @*https://stackoverflow.com/questions/31933776/how-to-include-the-id-in-the-submission-of-the-form*@
             <input type="hidden" asp-for="PropertyId">
             <div class="form-group">
                 <label asp-for="AddressId" class="control-label"></label>
-                <select asp-for="AddressId" class="form-control" id="selectAddress">
-                    @foreach (var item in Model.AddressList)
-                    {
-                        var address = item.StreetNumber + " " + item.StreetName + ", " + item.City + ", " + item.ProvinceName;
-                        <option value="@item.AddressId">
-
-                            @Html.DisplayFor(modelItem => address)
-                        </option>
-
-                    }
-                </select>
+                <input asp-for="AddressId" class="form-control" />
                 <span asp-validation-for="AddressId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -57,15 +47,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="TermId" class="control-label"></label>
-                <select asp-for="TermId" class="form-control" id="selectProvince">
-                    @foreach (var item in Model.TermList)
-                    {
-                        <option value="@item.TermID">
-                            @Html.DisplayFor(modelItem => item.TermName)
-                        </option>
-
-                    }
-                </select>
+                <input asp-for="TermId" class="form-control" />
                 <span asp-validation-for="TermId" class="text-danger"></span>
             </div>
             <div class="form-group">
