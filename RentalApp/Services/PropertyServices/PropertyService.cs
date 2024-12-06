@@ -81,16 +81,16 @@ namespace RentalApp.Services.PropertyService
 		}
 
 
-		public Property GetPropertyById(string connectionString, int id)
+		public Property GetPropertyById(string connectionString, int propertyId)
 		{
 			Property property = new Property();
 			using (SqlConnection con = new SqlConnection(connectionString))
 			{
 				con.Open();
-				string query = "SELECT PropertyID, SqFt, Facilities, Type, Price, AddressID, TermID, Availability FROM Properties WHERE PropertyID = @propertyID";
+				string query = "SELECT PropertyID, SqFt, Facilities, Type, Price, OwnerId, AddressID, TermID, Availability FROM Properties WHERE PropertyID = @propertyID";
 				using (SqlCommand cmd = new SqlCommand(query, con))
 				{
-					cmd.Parameters.AddWithValue("@propertyID", id);
+					cmd.Parameters.AddWithValue("@propertyID", propertyId);
 					SqlDataReader result = cmd.ExecuteReader();
 
 					while (result.Read())
@@ -100,7 +100,8 @@ namespace RentalApp.Services.PropertyService
 						property.Facilities = result["Facilities"].ToString();
 						property.Type = result["Type"].ToString();
 						property.Price = Convert.ToDouble(result["Price"]);
-						property.AddressId = Convert.ToInt32(result["AddressID"]);
+						property.OwnerId = Convert.ToInt32(result["OwnerId"]);
+                        property.AddressId = Convert.ToInt32(result["AddressID"]);
 						property.TermId = Convert.ToInt32(result["TermID"]);
 						property.Availability = result.GetBoolean("Availability");
 					}
@@ -167,11 +168,34 @@ namespace RentalApp.Services.PropertyService
 					transaction = cmd.ExecuteNonQuery();
 				}
 			}
-			Console.WriteLine("Edit Success?!");
+			Console.WriteLine("Edit Success!");
 			return transaction == 1;
 
 
 		}
+
+		public bool Delete(string connectionString, int propertyID)
+		{
+
+            int transaction = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("DeleteProperty", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@PropertyId", SqlDbType.Int).Value = propertyID;
+
+                    con.Open();
+                    transaction = cmd.ExecuteNonQuery();
+                }
+            }
+            Console.WriteLine("Delete successful!");
+            return transaction == 1;
+
+
+        }
+
+
 		public IEnumerable<Property> Get()
 		{
 			throw new NotImplementedException();
@@ -295,7 +319,53 @@ namespace RentalApp.Services.PropertyService
             return quoteViewModel;
         }
 
-		private List<int> GetTerms(int TermId)
+		public List<Term> GetTerms(string connectionString)
+		{
+			List<Term> terms = new List<Term>();
+
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetTerms", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        int termId = dr.GetInt32("TermID");
+                        string termName = dr.GetString("TermName");
+                        terms.Add(new Term(termId, termName));
+                    }
+                }
+            }
+			return terms;
+        }
+
+        public string GetTermNameById(string connectionString, int termId)
+        {
+			string termName = "";
+
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+				string query = "SELECT TermName FROM Term WHERE TermId = @termId";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.Add("@termId", SqlDbType.Int).Value = termId;
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        termName = dr.GetString("TermName");
+                    }
+                }
+            }
+            return termName;
+        }
+
+
+        private List<int> GetTerms(int TermId)
 		{
 			switch (TermId)
             {
