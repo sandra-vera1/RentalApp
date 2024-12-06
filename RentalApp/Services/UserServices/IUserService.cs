@@ -11,6 +11,9 @@ namespace RentalApp.Services.UserServices
 
         public bool EditUser(string connectionString, User user);
 
+
+        public OwnerContactInfo GetUserById(string connectionString, int id);
+
         public IEnumerable<UserViewModel> ListUsers(string connectionString);
 
     }

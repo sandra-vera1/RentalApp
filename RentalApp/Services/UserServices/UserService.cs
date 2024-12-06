@@ -80,5 +80,32 @@ namespace RentalApp.Services.UserServices
             }
             return users;
         }
+
+
+        public OwnerContactInfo GetUserById(string connectionString, int userId)
+        {
+
+            OwnerContactInfo user = new OwnerContactInfo();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT FullName, PhoneNumber, Email FROM Users WHERE UserID = @userId";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = userId;
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        user.FullName = dr.GetString("FullName");
+                        user.UserPhoneNumber = dr.GetString("PhoneNumber");
+                        user.UserEmail = dr.GetString("Email");
+                    }
+                }
+            }
+            return user;
+
+
+
+        }
     }
 }
