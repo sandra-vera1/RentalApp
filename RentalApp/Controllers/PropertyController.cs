@@ -1,12 +1,14 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using RentalApp.Models;
-using RentalApp.ViewModels;
+using RentalApp.Services.AddressServices;
 using RentalApp.Services.PropertyService;
-using Microsoft.AspNetCore.Authorization;
 using RentalApp.Services.QuoteServices;
-using System;
+using RentalApp.Services.UserServices;
+using RentalApp.ViewModels;
+using System.Reflection;
 using System.Text.Json;
 
 
@@ -17,12 +19,17 @@ namespace RentalApp.Controllers
     {
         private readonly string _connectionString;
         private readonly IPropertyService _propertyService;
+        private readonly IAddressService _addressService;
+        private readonly IUserService _userServices;
+
 
 		public PropertyController(IOptions<ConnectionStringOptions> options,
-			IPropertyService propertyService)
+			IPropertyService propertyService, IAddressService addressService, IUserService userService)
         {
             _connectionString = options.Value.Connection;
 			_propertyService = propertyService;
+            _addressService = addressService;
+            _userServices = userService;
         }
 
 
@@ -45,9 +52,18 @@ namespace RentalApp.Controllers
         }
 
         // GET: PropertyController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int propertyId)
         {
-            return View();
+            PropertyOwnerListView propertyDetails = new PropertyOwnerListView();
+
+            propertyDetails.Property = _propertyService.GetPropertyById(_connectionString, propertyId);
+
+            propertyDetails.Owner = _userServices.GetUserById(_connectionString, propertyDetails.Property.OwnerId);
+            propertyDetails.Property.Address = _addressService.GetAddressOfProperty(_connectionString, propertyDetails.Property.PropertyId);
+            propertyDetails.Term = _propertyService.GetTermNameById(_connectionString, propertyDetails.Property.TermId);
+
+
+            return View(propertyDetails);
         }
 
         // ************************ TEST *****************************
@@ -173,17 +189,32 @@ namespace RentalApp.Controllers
         // GET: PropertyController/Create
         public ActionResult Create()
         {
-            return View();
+            try
+            {
+                int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
+
+                CreatePropertyViewModel property = new CreatePropertyViewModel();
+                property.TermList = _propertyService.GetTerms(_connectionString);
+                property.AddressList = _addressService.GetAddressesOfUser(_connectionString, UserId);
+
+
+
+                return View(property);
+            }
+            catch
+            {
+                return View();
+            }
+            
         }
 
         // POST: PropertyController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Property model)
+        public IActionResult Create(CreatePropertyViewModel model)
         {
             try
             {
-
                 Property property = new Property(
                     model.AddressId, 
                     model.SquareFootage, 
@@ -196,42 +227,75 @@ namespace RentalApp.Controllers
                     );
 				_propertyService.Create(_connectionString, property);
 
-                return RedirectToAction(nameof(Create));
+                return RedirectToAction(nameof(MyProperties));
             }
             catch
             {
-                return View("Create");
+                int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
+
+                model.TermList = _propertyService.GetTerms(_connectionString);
+                model.AddressList = _addressService.GetAddressesOfUser(_connectionString, UserId);
+
+                return View(model);
             }
         }
 
         // GET: PropertyController/Edit/5
+
         public ActionResult Edit(int id)
         {
 
             try
             {
+                int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
                 // retrieve property data
                 Property property = _propertyService.GetPropertyById(_connectionString, id);
+                CreatePropertyViewModel editView = new CreatePropertyViewModel();
+
+                editView.TermList = _propertyService.GetTerms(_connectionString);
+                editView.AddressList = _addressService.GetAddressesOfUser(_connectionString, UserId);
+
+                editView.PropertyId = property.PropertyId;
+                editView.SquareFootage = property.SquareFootage;
+                editView.Facilities = property.Facilities;
+                editView.Type = property.Type;
+                editView.Price = property.Price;
+                editView.AddressId = property.AddressId;
+                editView.TermId = property.TermId;
+                editView.Availability = property.Availability;
 
                 // send property object to view - this allows us to pre-populate the form with current property info
-                return View(property);
+                return View(editView);
             }
             catch
             {
                 return View();
             }
 
-
-
-
-
         }
+
+
+        //public ActionResult Edit(int id)
+        //{
+        //    try
+        //    {
+        //        // retrieve property data
+        //        Property property = _propertyService.GetPropertyById(_connectionString, id);
+
+        //        // send property object to view - this allows us to pre-populate the form with current property info
+        //        return View(property);
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
         // POST: PropertyController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         // int id, IFormCollection collection
-        public ActionResult Edit(Property model)
+        public ActionResult Edit(CreatePropertyViewModel model)
         {
             try
             {
@@ -253,14 +317,33 @@ namespace RentalApp.Controllers
             }
             catch
             {
-                return View("Edit");
+                int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
+
+                model.TermList = _propertyService.GetTerms(_connectionString);
+                model.AddressList = _addressService.GetAddressesOfUser(_connectionString, UserId);
+
+                return View(model);
+
+
+                //return View("Edit");
             }
         }
 
-        // GET: PropertyController/Delete/5
-        public ActionResult Delete(int id)
+    
+
+// GET: PropertyController/Delete/5
+public ActionResult Delete(int id)
         {
-            return View();
+            try
+            {
+                _propertyService.Delete(_connectionString, id);
+                return RedirectToAction(nameof(MyProperties));
+            }
+            catch
+            {
+                return RedirectToAction(nameof(MyProperties));
+            }
+            // return View();
         }
 
         // POST: PropertyController/Delete/5
@@ -270,7 +353,7 @@ namespace RentalApp.Controllers
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MyProperties));
             }
             catch
             {
@@ -278,8 +361,27 @@ namespace RentalApp.Controllers
             }
         }
 
-		// GET: PropertyController/Favorites
-		[Authorize(Policy = "RenterOnly")]
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
+
+
+
+
+        // GET: PropertyController/Favorites
+        [Authorize(Policy = "RenterOnly")]
 		public ActionResult Favorites()
 		{
 			try
@@ -334,3 +436,5 @@ namespace RentalApp.Controllers
         }
     }
 }
+
+
