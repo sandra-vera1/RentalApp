@@ -3,19 +3,21 @@
     public class Address
     {
         public int AddressId { get;  set; } // pending put in Class diagram
-        public string Neighborhood { get; private set; }
-        public int StreetNumber { get; private set; }
-        public string StreetName { get; private set; }
-        public string City { get; private set; }
-        public int Province { get; private set; }
-        public string Country { get; private set; } // added this field pending put in Class diagram
-        public string PostalCode { get; private set; }
-        public int SuiteNumber { get; private set; }
+        public string Neighborhood { get; set; }
+        public int StreetNumber { get; set; }
+        public string StreetName { get; set; }
+        public string City { get; set; }
+        public int Province { get; set; }
+        public string Country { get; set; } // added this field pending put in Class diagram
+        public string PostalCode { get; set; }
+        public int SuiteNumber { get; set; }
 
         public string ProvinceName { get; set; } // had to change this set to public to modify it when getting prop data
 
         public int UserId { get; set; }
         public List<Province> Provinces { get; set; }
+
+        public Address() { }
 
         public Address(List<Province> provinces)
         {
