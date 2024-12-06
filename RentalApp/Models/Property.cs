@@ -18,7 +18,7 @@ namespace RentalApp.Models
         public bool Availability { get; set; }
         public double Price { get; set; }
         public int TermId { get; set; }
-        public int OwnerId { get; private set; }
+        public int OwnerId { get; set; }
 
         // empty constructor is require to use asp-for
         public Property()
