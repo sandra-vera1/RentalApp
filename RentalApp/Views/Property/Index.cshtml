@@ -97,7 +97,7 @@
 				@Html.DisplayNameFor(model => model.PropDisplay.Property.Facilities)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.PropDisplay.Property.TermId)
+				@Html.DisplayNameFor(model => model.PropDisplay.Term)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.PropDisplay.Property.Type)
@@ -140,7 +140,7 @@
 					@Html.DisplayFor(modelItem => item.Property.Facilities)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Property.TermId)
+					@Html.DisplayFor(modelItem => item.Term)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Property.Type)
@@ -157,17 +157,22 @@
 				<td>
 					@if (User.IsInRole("Owner"))
 					{
-						@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
-						@:|
-						@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
-						@:|
-						@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+						// I feel like edit and delete should not be on the full property list page as this page lists ALL properties
+						// we can't have owners editing each others properties. 
+						// Unless we are able to add this ONLY to properties of that owner however that seems tedious
+@* 						@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) 
+						@:| *@
+						@Html.ActionLink("Details", "Details", new { propertyId = item.Property.PropertyId })
+@* 						@:|
+						@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
 					}
 					@if (User.IsInRole("Renter"))
 					{
 						@Html.ActionLink("Add Favorite", "AddFavorite", new { id = item.Property.PropertyId })
 						@:|
 						@Html.ActionLink("Quote", "Quote", new { id = item.Property.PropertyId }, new { target = "_blank" })
+						@:|
+						@Html.ActionLink("Details", "Details", new { propertyId = item.Property.PropertyId })
 					}
 				</td>
 			</tr>
