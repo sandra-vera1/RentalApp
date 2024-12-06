@@ -126,5 +126,84 @@ namespace RentalApp.Services.AddressServices
             }
             return transaction == 1;
         }
+
+
+        public List<Address> GetAddressesOfUser(string connectionString, int userId)
+        {
+            List<Address> addresses = new List<Address>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetAddressesOfUser", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        string Neigborhood = dr.GetString("Neighborhood");
+                        int StreetNumber = dr.GetInt32("StreetNumber");
+                        string StreetName = dr.GetString("StreetName");
+                        string City = dr.GetString("City");
+                        int ProvinceID = dr.GetInt32("ProvinceID");
+                        string Country = dr.GetString("Country");
+                        int SuiteNumber = dr.IsDBNull("SuiteNumber") ? 0 : dr.GetInt32("SuiteNumber");
+                        string PostalCode = dr.GetString("PostalCode");
+                        Address address = new Address(Neigborhood, StreetNumber, StreetName, City,
+                            ProvinceID, Country, PostalCode, SuiteNumber);
+                        address.AddressId = dr.GetInt32("AddressID");
+                        address.UserId = dr.GetInt32("UserID");
+                        address.ProvinceName = dr.GetString("ProvinceName");
+                        addresses.Add(address);
+                    }
+                }
+            }
+            return addresses;
+        }
+
+
+
+        public Address GetAddressOfProperty(string connectionString, int addressId)
+        {
+            Address address = new Address();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Address a JOIN Provinces p ON p.ProvinceID = a.ProvinceID WHERE AddressID = @addressId";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.Add("@addressId", SqlDbType.Int).Value = addressId;
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        string Neigborhood = dr.GetString("Neighborhood");
+                        int StreetNumber = dr.GetInt32("StreetNumber");
+                        string StreetName = dr.GetString("StreetName");
+                        string City = dr.GetString("City");
+                        int ProvinceID = dr.GetInt32("ProvinceID");
+                        string Country = dr.GetString("Country");
+                        int SuiteNumber = dr.IsDBNull("SuiteNumber") ? 0 : dr.GetInt32("SuiteNumber");
+                        string PostalCode = dr.GetString("PostalCode");
+
+                        address.Neighborhood = Neigborhood;
+                        address.StreetNumber = StreetNumber;
+                        address.StreetName = StreetName;
+                        address.City = City;
+                        address.Province = ProvinceID;
+                        address.Country = Country;
+                        address.SuiteNumber = SuiteNumber;
+                        address.PostalCode = PostalCode;
+                        address.AddressId = dr.GetInt32("AddressID");
+                        address.UserId = dr.GetInt32("UserID");
+                        address.ProvinceName = dr.GetString("ProvinceName");
+                    }
+                }
+            }
+            return address;
+        }
+
+
     }
 }
