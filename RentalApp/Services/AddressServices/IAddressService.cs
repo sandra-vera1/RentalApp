@@ -10,5 +10,9 @@ namespace RentalApp.Services.AddressServices
         public IEnumerable<AddressViewModel> ListAddress(string connectionString);
         public List<Province> ListProvinces(string connectionString);
         public bool UpdateAddress(string connectionString, Address address);
+
+        public List<Address> GetAddressesOfUser(string connectionString, int userId);
+
+        public Address GetAddressOfProperty(string connectionString, int addressId);
     }
 }
