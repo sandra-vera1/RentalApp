@@ -15,14 +15,14 @@
         public List<User> Users { get; set; }
 
         public User() { }
-		public User(string fullName, string password, string userPhoneNumber, string userEmail, int userAccountType)
+
+        public User(string fullName, string userPhoneNumber, string userEmail)
         {
             FullName = fullName;
-            Password = password;
             UserPhoneNumber = userPhoneNumber;
             UserEmail = userEmail;
-            UserAccountType = userAccountType;
         }
+
 
         public User(string fullName, string userPhoneNumber, string userEmail, int userAccountType)
         {
@@ -31,6 +31,16 @@
             UserEmail = userEmail;
             UserAccountType = userAccountType;
         }
+        public User(string fullName, string password, string userPhoneNumber, string userEmail, int userAccountType)
+        {
+            FullName = fullName;
+            Password = password;
+            UserPhoneNumber = userPhoneNumber;
+            UserEmail = userEmail;
+            UserAccountType = userAccountType;
+        }
+
+        
 
         public User(int userId, string fullName, string password, string userPhoneNumber, string userEmail, int userAccountType)
         {
