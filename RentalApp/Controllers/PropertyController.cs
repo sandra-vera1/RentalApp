@@ -79,50 +79,6 @@ namespace RentalApp.Controllers
 
 				propertiesAndSearch.PropertyList = _propertyService.Get(_connectionString);
 
-
-                //double sqFtMin = Convert.ToDouble(collection["SqFtMin"][0]);
-                //Remember to check if the value is a double before the convert or use the: double.TryParse(type, out double value);
-                double priceMin;
-                double priceMax;
-                double sqFtMin;
-                double sqFtMax;
-
-                //string searchAll = collection["SearchAll"][0];
-
-                //double.TryParse(collection["PriceMin"][0], out priceMin);
-                //priceMin = priceMin > 0 ? priceMin : double.MinValue;
-                //double.TryParse(collection["PriceMax"][0], out priceMax);
-                //priceMax = priceMax > 0 ? priceMax : double.MaxValue;
-
-
-                //double.TryParse(collection["sqFtMin"][0], out sqFtMin);
-                //sqFtMin = sqFtMin > 0 ? sqFtMin : double.MinValue;
-                //double.TryParse(collection["SqFtMax"][0], out sqFtMax);
-                //sqFtMax = sqFtMax > 0 ? sqFtMax : double.MaxValue;
-
-                //string neighborhood = collection["Neighborhood"][0];
-                //string type = collection["Type"][0];
-                //string testAvail = collection["Availability"][0];
-                //bool? availability = collection["Availability"][0] == "Availability" ? true : false;
-                //Convert.ToBoolean(collection["Availability"][0]);
-                //bool availability = collection["Availability"][0];
-
-
-
-
-
-                //double.TryParse(collection["PriceMin"][0], out priceMin);
-                //double.TryParse(collection["PriceMax"][0], out priceMax);
-
-                //double.TryParse(collection["sqFtMin"][0], out sqFtMin);
-                //double.TryParse(collection["SqFtMax"][0], out sqFtMax);
-
-                //double priceMin = Convert.ToDouble(collection["PriceMin"][0])
-                //double priceMax = Convert.ToDouble(collection["PriceMax"][0]);
-                //double sqFtMin = Convert.ToDouble(collection["sqFtMin"][0]);
-                //double sqFtMax = Convert.ToDouble(collection["SqFtMax"][0]);
-
-                //List < Property> Model = _property.ListProperty();
                 propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList.Where(prop => prop.Property.Price > filter.PriceMin)
                     .Where(prop => prop.Property.Price < filter.PriceMax)
                     .Where(prop => prop.Property.SquareFootage > filter.SqFtMin)
@@ -138,6 +94,11 @@ namespace RentalApp.Controllers
 					propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList
 						.Where(prop => prop.Property.Address.Neighborhood.ToLower().Contains(filter.Neighborhood.ToLower()));
 				}
+                if(filter.Availability)
+                {
+                    propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList
+                        .Where(prop => prop.Property.Availability == true);
+                }
 
 
                  //Model.Contains(prop => prop.Property.Price > filter.MinPrice);
@@ -168,16 +129,21 @@ namespace RentalApp.Controllers
                 // FILTER MODEL WITH LOGGED IN USER ID?? 
                 // **********************************************************************************************
                 
-                PropertySearchViewModel propertiesAndSearch = new PropertySearchViewModel();
-                propertiesAndSearch.PropertyList = _propertyService.Get(_connectionString);
-                propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList.Where(p => p.Property.OwnerId == UserId);
+                //PropertySearchViewModel propertiesAndSearch = new PropertySearchViewModel();
+                // List<PropertyOwnerListView> propertyDetails = new List<PropertyOwnerListView>();
 
-                List<Property> properties = new List<Property>();
-                foreach (var property in propertiesAndSearch.PropertyList)
-                {
-                    properties.Add(property.Property);
-                }
-                return View(properties);
+                var propertyDetails = _propertyService.Get(_connectionString);
+                propertyDetails = propertyDetails.Where(p => p.Property.OwnerId == UserId);
+
+                //propertiesAndSearch.PropertyList = _propertyService.Get(_connectionString);
+                //propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList.Where(p => p.Property.OwnerId == UserId);
+
+                //List<Property> properties = new List<Property>();
+                //foreach (var property in propertyDetails)
+                //{
+                //    properties.Add(property.Property);
+                //}
+                return View(propertyDetails);
             }
             catch
             {
