@@ -60,7 +60,7 @@ namespace RentalApp.Controllers
             propertyDetails.Property = _propertyService.GetPropertyById(_connectionString, propertyId);
 
             propertyDetails.Owner = _userServices.GetUserById(_connectionString, propertyDetails.Property.OwnerId);
-            propertyDetails.Property.Address = _addressService.GetAddressOfProperty(_connectionString, propertyDetails.Property.PropertyId);
+            propertyDetails.Property.Address = _addressService.GetAddressOfProperty(_connectionString, propertyDetails.Property.AddressId);
             propertyDetails.Term = _propertyService.GetTermNameById(_connectionString, propertyDetails.Property.TermId);
 
 
