@@ -5,8 +5,12 @@
 	ViewData["Title"] = "Index";
 }
 
+<<<<<<< Updated upstream
 <h1>Property List</h1>
 <br />
+=======
+<h1>Our Properties</h1>
+>>>>>>> Stashed changes
 
 <div>
 	<form asp-action="Search"
@@ -14,48 +18,55 @@
 		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 		<div class="form-group">
 			<label asp-for="SearchAll">Search All</label>
-			<input id="SearchAll" name="SearchAll" />
+			<div id="searchDiv">
+				<input id="SearchAll" name="SearchAll" />
+				<input type="submit" value="Search" class="btn btn-secondary" />
+			</div>
+			
+		</div>
+		<br />
+		<button type="button" id="AdvancedSearchFilterButton" class="btn btn-secondary">Advanced Search Filters</button>
+		<br />
+		<br />
+		<div id="SearchFilterDiv" class="col-md-4">
+			<div class="form-group">
 
-		</div>
-		<br />
-		<div class="form-group">
+				<label asp-for="Availability">Available Now</label>
+				<input id="Availability" name="Availability" type="checkbox" value="true" />
 
-			<label asp-for="Availability">Available Now</label>
-			<input id="Availability" name="Availability" type="checkbox" value="true"/>
+			</div>
+			<br />
+			<div class="form-group">
+				<label>Price:</label>
+				<br />
+				<label asp-for="PriceMin" type="number" class="control-label">Min</label>
+				<input id="PriceMin" name="PriceMin" class="form-control" />
+				<label asp-for="PriceMax" class="control-label">Max</label>
+				<input id="PriceMax" name="PriceMax" class="form-control" />
+			</div>
+			<br />
+			<div class="form-group">
+				<label asp-for="Neighborhood" class="control-label">Neighborhood</label>
+				<input id="Neighborhood" name="Neighborhood" class="form-control" />
 
+				<label asp-for="Type" class="control-label">Type</label>
+				<select id="Type" name="Type" class="form-control">
+					<option value="All">All</option>
+					<option value="Storage">Storage</option>
+					<option value="Parking Lot">Parking Lot</option>
+				</select>
+			</div>
+			<br />
+			<div class="form-group">
+				<label class="control-label">Square Footage:</label>
+				<br />
+				<label asp-for="SqFtMin" class="control-label" class="control-label">Min</label>
+				<input id="SqFtMin" name="SqFtMin" class="form-control" />
+				<label asp-for="SqFtMax" class="control-label" class="control-label">Max</label>
+				<input id="SqFtMax" name="SqFtMax" class="form-control" />
+			</div>
 		</div>
-		<br />
-		<div class="form-group">
-			<label>Price:</label>
-			<label asp-for="PriceMin" class="control-label" type="number">Min</label>
-			<input id="PriceMin" name="PriceMin" />
-			<label asp-for="PriceMax" class="control-label">Max</label>
-			<input id="PriceMax" name="PriceMax" />
-		</div>
-		<br />
-		<div class="form-group">
-			<label asp-for="Neighborhood">Neighborhood</label>
-			<input id="Neighborhood" name="Neighborhood" />
-
-			<label asp-for="Type">Type</label>
-			<select id="Type" name="Type">
-				<option value="All">All</option>
-				<option value="Storage">Storage</option>
-				<option value="Parking Lot">Parking Lot</option>
-			</select>
-		</div>
-		<br />
-		<div class="form-group">
-			<label>Square Footage:</label>
-			<label asp-for="SqFtMin" class="control-label">Min</label>
-			<input id="SqFtMin" name="SqFtMin" />
-			<label asp-for="SqFtMax" class="control-label">Max</label>
-			<input id="SqFtMax" name="SqFtMax" />
-		</div>
-		<br />
-		<div class="form-group">
-			<input type="submit" value="Search" class="btn btn-secondary" />
-		</div>
+	
 
 
 	</form>
@@ -67,8 +78,18 @@
 <table class="table">
 	<br />
 	<thead>
+<<<<<<< Updated upstream
 		
 		<tr class="table-dark">
+=======
+	@* 	<a href="d:\school\sodv2202 oop\sodv2202_groupproject_rentalapp\rentalapp\rentalapp\views\property\create.cshtml">d:\school\sodv2202 oop\sodv2202_groupproject_rentalapp\rentalapp\rentalapp\views\property\create.cshtml</a>
+		<br />
+		@Html.ActionLink("Create Property", "Create")
+		<--- Is this what your were looking for? Html.ActionLink("Link text", "Action" )
+		<br />
+		<a href="/Property/Create">Create Property</a> <--- Created manually, the href should have the "/ControllerName/Action" if you need to pass a parameter like the id, you add at the end like "/ControllerName/Action/15" *@
+		<tr>
+>>>>>>> Stashed changes
 
 			<th>
 				@Html.DisplayNameFor(model => model.PropDisplay.Property.Address.StreetNumber)
@@ -171,3 +192,7 @@
 		}
 	</tbody>
 </table>
+
+@* @section Scripts {
+	<script src="/js/site.js"></script>
+} *@

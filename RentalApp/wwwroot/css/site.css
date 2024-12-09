@@ -30,6 +30,7 @@ body {
     z-index: 0; /* Make sure the background is behind the content */
 }
 
+<<<<<<< Updated upstream
 .carousel {
     width: 100%;
 }
@@ -37,4 +38,36 @@ body {
 .w-100 {
     height: 800px;
     width: 1200px;
+=======
+
+
+
+/*********************************************************** CUSTOM CSS  ******************************************************************/
+
+#SearchFilterDiv {
+    display: none;
+}
+
+#searchDiv {
+    width: min(400px, 90vw);
+}
+
+#SearchAll {
+   box-sizing: border-box;
+    display: inline-block;
+    width: 300px;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+>>>>>>> Stashed changes
 }
