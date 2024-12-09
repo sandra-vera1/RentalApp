@@ -80,10 +80,10 @@ namespace RentalApp.Controllers
 
 				propertiesAndSearch.PropertyList = _propertyService.Get(_connectionString);
 
-                propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList.Where(prop => prop.Property.Price > filter.PriceMin)
-                    .Where(prop => prop.Property.Price < filter.PriceMax)
-                    .Where(prop => prop.Property.SquareFootage > filter.SqFtMin)
-                    .Where(prop => prop.Property.SquareFootage < filter.SqFtMax)
+                propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList.Where(prop => prop.Property.Price >= filter.PriceMin)
+                    .Where(prop => prop.Property.Price <= filter.PriceMax)
+                    .Where(prop => prop.Property.SquareFootage >= filter.SqFtMin)
+                    .Where(prop => prop.Property.SquareFootage <= filter.SqFtMax)
                     .Where(prop => prop.Property.Type.ToLower() == filter.Type.ToLower() || filter.Type == "All");
                 if(filter.SearchAll != null)
                 {
