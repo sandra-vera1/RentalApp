@@ -88,7 +88,17 @@ namespace RentalApp.Controllers
                 if(filter.SearchAll != null)
                 {
                     propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList
-                        .Where(prop => prop.Property.Address.StreetName.ToLower().Contains(filter.SearchAll.ToLower()));
+                        .Where(prop => prop.Property.Address.StreetNumber.ToString().ToLower().Contains(filter.SearchAll.ToLower()) || 
+                            prop.Property.Address.StreetName.ToLower().Contains(filter.SearchAll.ToLower()) ||
+						    prop.Property.Address.City.ToLower().Contains(filter.SearchAll.ToLower()) ||
+							prop.Property.Address.ProvinceName.ToLower().Contains(filter.SearchAll.ToLower()) ||
+							prop.Property.SquareFootage.ToString().ToLower().Contains(filter.SearchAll.ToLower()) ||
+							prop.Property.Facilities.ToLower().Contains(filter.SearchAll.ToLower()) ||
+							prop.Term.ToLower().Contains(filter.SearchAll.ToLower()) ||
+							prop.Property.Type.ToLower().Contains(filter.SearchAll.ToLower()) ||
+							prop.Property.Price.ToString().ToLower().Contains(filter.SearchAll.ToLower()) ||
+							prop.Property.Address.Neighborhood.ToLower().Contains(filter.SearchAll.ToLower())
+						);
 				}
                 if (filter.Neighborhood != null)
                 {
