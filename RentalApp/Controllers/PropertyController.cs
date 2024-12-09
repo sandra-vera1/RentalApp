@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.Options;
 using RentalApp.Models;
 using RentalApp.Services.AddressServices;
@@ -157,7 +158,9 @@ namespace RentalApp.Controllers
         {
             try
             {
+                
                 int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
+                
 
                 CreatePropertyViewModel property = new CreatePropertyViewModel();
                 property.TermList = _propertyService.GetTerms(_connectionString);
@@ -181,16 +184,18 @@ namespace RentalApp.Controllers
         {
             try
             {
-                Property property = new Property(
+				int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
+
+				Property property = new Property(
                     model.AddressId, 
                     model.SquareFootage, 
                     model.Facilities, 
                     model.TermId, 
                     model.Type, 
                     model.Availability, 
-                    model.Price, 
-                    1 // manually making owner ID 1 right now until we have session management
-                    );
+                    model.Price,
+					UserId 
+					);
 				_propertyService.Create(_connectionString, property);
 
                 return RedirectToAction(nameof(MyProperties));
