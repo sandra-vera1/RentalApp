@@ -42,9 +42,12 @@
 									<li class="nav-item">
 										<a class="nav-link text-dark" asp-area="" asp-controller="Property" asp-action="Index">Property List</a>
 									</li>
-									<li class="nav-item">
-										<a class="nav-link text-dark" asp-area="" asp-controller="Property" asp-action="Favorites">Favorite Properties</a>
-									</li>
+									@if (User.IsInRole("Renter"))
+									{
+										<li class="nav-item">
+											<a class="nav-link text-dark" asp-area="" asp-controller="Property" asp-action="Favorites">Favorite Properties</a>
+										</li>
+									}
 									@if (User.IsInRole("Owner"))
 									{
 										<li class="nav-item">
