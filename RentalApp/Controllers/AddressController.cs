@@ -45,8 +45,6 @@ namespace RentalApp.Controllers
         }
 
         // POST: AddressController/Create
-
-        //create connection with Model)//step 4 before this step you need to create the View inside a folder with the same name in this case Address.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -81,6 +79,7 @@ namespace RentalApp.Controllers
         // GET: AddressController/Edit/5
         public ActionResult Edit(int id)  
         {
+            // retrieve addresses from DB
             IEnumerable<AddressViewModel> addresses = _addressService.ListAddress(_connectionString);
 			AddressViewModel address = addresses.First(a => a.address.AddressId == id);
             return View(address);
@@ -105,6 +104,7 @@ namespace RentalApp.Controllers
                 int SuiteNumber = Convert.ToInt32(collection["address.SuiteNumber"][0]);
                 Address address = new Address(Neighborhood, StreetNumber, StreetName, City, Province, Country, PostalCode, SuiteNumber);
                 address.AddressId = id;
+                // send new information to the DB method to update details
                 _addressService.UpdateAddress(_connectionString, address);
                 return RedirectToAction(nameof(Index));
             }

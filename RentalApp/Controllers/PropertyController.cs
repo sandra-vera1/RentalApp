@@ -18,8 +18,14 @@ namespace RentalApp.Controllers
 {
     public class PropertyController : Controller
     {
+
         private readonly string _connectionString;
-        private readonly IPropertyService _propertyService;
+		// https://www.youtube.com/watch?v=Wiy54682d1w
+		// https://www.c-sharpcorner.com/article/implement-and-register-dependency-injection-in-asp-net-core-net-6/
+		// used these to learn about repository pattern and services
+
+		// add all our service classes with methods that are used to connect to the DB
+		private readonly IPropertyService _propertyService;
         private readonly IAddressService _addressService;
         private readonly IUserService _userServices;
 
@@ -40,8 +46,12 @@ namespace RentalApp.Controllers
         {
             try
             {
+                // this search view model contains a list of properties to display
+                // and property fields used by ASP to collect form input upon user search
+                // this simplifies the data transfer from UI to controller
                 PropertySearchViewModel propertiesAndSearch = new PropertySearchViewModel();
 
+                // collect all properties in the DB
 				propertiesAndSearch.PropertyList = _propertyService.Get(_connectionString);
                 return View(propertiesAndSearch);
             }
@@ -55,19 +65,23 @@ namespace RentalApp.Controllers
         // GET: PropertyController/Details/5
         public ActionResult Details(int propertyId)
         {
+            // property details class includes an owner object, property object and Term information
+            // this is used to display all data relevant to an end user instead of ID's 
             PropertyOwnerListView propertyDetails = new PropertyOwnerListView();
 
+            // get property based on ID passed from the view
             propertyDetails.Property = _propertyService.GetPropertyById(_connectionString, propertyId);
-
+            
+            // use OwnerID to retrieve Owner details
             propertyDetails.Owner = _userServices.GetUserById(_connectionString, propertyDetails.Property.OwnerId);
+            // use AddressID to retrieve Address details
             propertyDetails.Property.Address = _addressService.GetAddressOfProperty(_connectionString, propertyDetails.Property.AddressId);
+            // get Term Name information from TermID
             propertyDetails.Term = _propertyService.GetTermNameById(_connectionString, propertyDetails.Property.TermId);
 
-
+            // pass all values back to the view for displaying
             return View(propertyDetails);
         }
-
-        // ************************ TEST *****************************
 
         // POST: PropertyController/Search
         [HttpPost]
@@ -78,8 +92,12 @@ namespace RentalApp.Controllers
 
 				PropertySearchViewModel propertiesAndSearch = new PropertySearchViewModel();
 
+                // retrieve all properties in DB into the display list
 				propertiesAndSearch.PropertyList = _propertyService.Get(_connectionString);
 
+                // perform necessary filtering based on search values passed from view
+                // if no value was provided for min or max prices / sq ft, the class is constructed with default infinite max / min values
+                // this allows the search to have no limitation if non was provided
                 propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList.Where(prop => prop.Property.Price >= filter.PriceMin)
                     .Where(prop => prop.Property.Price <= filter.PriceMax)
                     .Where(prop => prop.Property.SquareFootage >= filter.SqFtMin)
@@ -112,10 +130,6 @@ namespace RentalApp.Controllers
                 }
 
 
-                 //Model.Contains(prop => prop.Property.Price > filter.MinPrice);
-
-                // return View("./Index", FilteredModel);
-
                 return View("Index", propertiesAndSearch);
             }
             catch
@@ -125,40 +139,24 @@ namespace RentalApp.Controllers
             
         }
 
-
-        // *****************************************************
-
-
         // GET: My Properties
 
         public ActionResult MyProperties()
         {
             try
             {
+
+                // get loggedin userID
                 int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);//UserId from the session
-                // **********************************************************************************************
-                // FILTER MODEL WITH LOGGED IN USER ID?? 
-                // **********************************************************************************************
-                
-                //PropertySearchViewModel propertiesAndSearch = new PropertySearchViewModel();
-                // List<PropertyOwnerListView> propertyDetails = new List<PropertyOwnerListView>();
 
                 var propertyDetails = _propertyService.Get(_connectionString);
+                // filter properties based on current user
                 propertyDetails = propertyDetails.Where(p => p.Property.OwnerId == UserId);
 
-                //propertiesAndSearch.PropertyList = _propertyService.Get(_connectionString);
-                //propertiesAndSearch.PropertyList = propertiesAndSearch.PropertyList.Where(p => p.Property.OwnerId == UserId);
-
-                //List<Property> properties = new List<Property>();
-                //foreach (var property in propertyDetails)
-                //{
-                //    properties.Add(property.Property);
-                //}
                 return View(propertyDetails);
             }
             catch
             {
-                // Redirect to home page on error right now
                 return View();
             }
         }
@@ -168,12 +166,13 @@ namespace RentalApp.Controllers
         {
             try
             {
-                
+                // retrieve userID of logged in user
                 int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
                 
 
                 CreatePropertyViewModel property = new CreatePropertyViewModel();
                 property.TermList = _propertyService.GetTerms(_connectionString);
+                // use ID to retrieve users addresses list
                 property.AddressList = _addressService.GetAddressesOfUser(_connectionString, UserId);
 
 
@@ -195,7 +194,7 @@ namespace RentalApp.Controllers
             try
             {
 				int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
-
+                // create property based on data sent from the view
 				Property property = new Property(
                     model.AddressId, 
                     model.SquareFootage, 
@@ -206,12 +205,14 @@ namespace RentalApp.Controllers
                     model.Price,
 					UserId 
 					);
+                // send property object to DB function to insert new property
 				_propertyService.Create(_connectionString, property);
 
                 return RedirectToAction(nameof(MyProperties));
             }
             catch
             {
+                // on error redisplay page with necessary details
                 int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
 
                 model.TermList = _propertyService.GetTerms(_connectionString);
@@ -229,13 +230,15 @@ namespace RentalApp.Controllers
             try
             {
                 int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
-                // retrieve property data
+                // retrieve property data via id
                 Property property = _propertyService.GetPropertyById(_connectionString, id);
+                // here we can reused the createPropertyViewModel for editing since the values will be the same
                 CreatePropertyViewModel editView = new CreatePropertyViewModel();
 
                 editView.TermList = _propertyService.GetTerms(_connectionString);
                 editView.AddressList = _addressService.GetAddressesOfUser(_connectionString, UserId);
 
+                // however in this case we prepopulate the fields after retrieving property data 
                 editView.PropertyId = property.PropertyId;
                 editView.SquareFootage = property.SquareFootage;
                 editView.Facilities = property.Facilities;
@@ -256,31 +259,17 @@ namespace RentalApp.Controllers
         }
 
 
-        //public ActionResult Edit(int id)
-        //{
-        //    try
-        //    {
-        //        // retrieve property data
-        //        Property property = _propertyService.GetPropertyById(_connectionString, id);
-
-        //        // send property object to view - this allows us to pre-populate the form with current property info
-        //        return View(property);
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
         // POST: PropertyController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // int id, IFormCollection collection
         public ActionResult Edit(CreatePropertyViewModel model)
         {
+
             try
             {
-                Property property = new Property(
+				int UserId = Convert.ToInt32(User.Claims.First(c => c.Type == "UserId").Value);
+
+				Property property = new Property(
                 model.AddressId,
                 model.SquareFootage,
                 model.Facilities,
@@ -288,8 +277,8 @@ namespace RentalApp.Controllers
                 model.Type,
                 model.Availability,
                 model.Price,
-                1 // manually making owner ID 1 right now until we have session management
-                );
+				UserId
+				);
 
 
                 _propertyService.Edit(_connectionString, property, model.PropertyId);
@@ -305,8 +294,6 @@ namespace RentalApp.Controllers
 
                 return View(model);
 
-
-                //return View("Edit");
             }
         }
 
@@ -341,24 +328,6 @@ public ActionResult Delete(int id)
                 return View();
             }
         }
-
-
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-
 
 
         // GET: PropertyController/Favorites

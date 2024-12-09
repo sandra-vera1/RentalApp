@@ -12,9 +12,6 @@ namespace RentalApp.Services.PropertyService
 {
 	public class PropertyService : IPropertyService
 	{
-		//private readonly string _connectionString;
-
-
 		public IEnumerable<PropertyOwnerListView> Get(string connectionString)
 		{
 			List<PropertyOwnerListView> properties = new List<PropertyOwnerListView>();
@@ -66,7 +63,7 @@ namespace RentalApp.Services.PropertyService
 
 						OwnerContactInfo owner = new OwnerContactInfo(name, phoneNum, email);
 
-
+						// Once we have all necessary objects we create a new object that contains all details necessary for displaying to an end user
 						PropertyOwnerListView propDetails = new PropertyOwnerListView(prop, owner);
 						propDetails.Term = dr.GetString("TermName");
 						propDetails.Province = ProvinceName;
@@ -81,6 +78,8 @@ namespace RentalApp.Services.PropertyService
 		}
 
 
+
+		// retrieve property details based on property id
 		public Property GetPropertyById(string connectionString, int propertyId)
 		{
 			Property property = new Property();
@@ -112,6 +111,7 @@ namespace RentalApp.Services.PropertyService
 			return property;
 		}
 
+		// create new property via stored procedure
 		public bool Create(string connectionString, Property property)
 		{
 			int transaction = 0;
@@ -139,7 +139,6 @@ namespace RentalApp.Services.PropertyService
 			Console.WriteLine("Create Success?!");
 			return transaction == 1;
 
-			//throw new NotImplementedException();
 		}
 
 
@@ -174,6 +173,7 @@ namespace RentalApp.Services.PropertyService
 
 		}
 
+		// delete property based on propertyID
 		public bool Delete(string connectionString, int propertyID)
 		{
 
@@ -201,6 +201,7 @@ namespace RentalApp.Services.PropertyService
 			throw new NotImplementedException();
 		}
 
+		// adding a property to a renters favorites list
 		public bool CreateFavorite(string connectionString, int PropertyID, int RenterID)
 		{
 			int transaction = 0;
@@ -219,6 +220,7 @@ namespace RentalApp.Services.PropertyService
 			return transaction == 1;
 		}
 
+		// deleting from favorites list
 		public bool DeleteFavorite(string connectionString, int FavoriteID)
 		{
             int transaction = 0;
@@ -235,7 +237,8 @@ namespace RentalApp.Services.PropertyService
             }
             return transaction == 1;
         }
-
+		
+		// retrieve favorites list based on userID
 		public IEnumerable<PropertyFavoriteListView> GetFavoriteList(string connectionString, int RenterID)
 		{
 			List<PropertyFavoriteListView> FavoriteList = new List<PropertyFavoriteListView>();
@@ -279,6 +282,7 @@ namespace RentalApp.Services.PropertyService
 			return FavoriteList;
 		}
 
+		// get a quote for a property
         public QuoteViewModel GetPropertyQuote(string connectionString, int PropertyId)
         {
             QuoteViewModel quoteViewModel = new QuoteViewModel();
@@ -319,6 +323,8 @@ namespace RentalApp.Services.PropertyService
             return quoteViewModel;
         }
 
+		// retrieve Term names used for displaying user friendly details
+		// these are listed in drop down menus in create / edit property
 		public List<Term> GetTerms(string connectionString)
 		{
 			List<Term> terms = new List<Term>();
@@ -342,6 +348,7 @@ namespace RentalApp.Services.PropertyService
 			return terms;
         }
 
+		// this retrieves the term name based on ID used for displaying property detailed information in a user friendly format
         public string GetTermNameById(string connectionString, int termId)
         {
 			string termName = "";

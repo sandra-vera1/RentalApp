@@ -47,6 +47,7 @@ namespace RentalApp.Services.AddressServices
             return transaction == 1;
         }
 
+        // returns a list of all addresses
         public IEnumerable<AddressViewModel> ListAddress(string connectionString)
         {
             List<AddressViewModel> addresses = new List<AddressViewModel>();
@@ -128,6 +129,7 @@ namespace RentalApp.Services.AddressServices
         }
 
 
+        // returns a list of addresses belonging to a specific user ID. 
         public List<Address> GetAddressesOfUser(string connectionString, int userId)
         {
             List<Address> addresses = new List<Address>();
@@ -163,7 +165,7 @@ namespace RentalApp.Services.AddressServices
         }
 
 
-
+        // uses a given address Id to retrieve address details for that ID
         public Address GetAddressOfProperty(string connectionString, int addressId)
         {
             Address address = new Address();

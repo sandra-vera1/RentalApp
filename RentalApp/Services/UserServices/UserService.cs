@@ -82,6 +82,7 @@ namespace RentalApp.Services.UserServices
         }
 
 
+        // returns user details for a given userID
         public OwnerContactInfo GetUserById(string connectionString, int userId)
         {
 
