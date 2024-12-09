@@ -30,7 +30,7 @@ body {
     z-index: 0; /* Make sure the background is behind the content */
 }
 
-<<<<<<< Updated upstream
+
 .carousel {
     width: 100%;
 }
@@ -38,11 +38,8 @@ body {
 .w-100 {
     height: 800px;
     width: 1200px;
-=======
+}
 
-
-
-/*********************************************************** CUSTOM CSS  ******************************************************************/
 
 #SearchFilterDiv {
     display: none;
@@ -69,5 +66,5 @@ body {
     appearance: none;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
->>>>>>> Stashed changes
+
 }
